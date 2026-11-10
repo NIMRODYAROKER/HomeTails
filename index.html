@@ -543,10 +543,10 @@ footer{max-width:1140px;margin:0 auto;padding:0 18px 120px}
 const CATS = [
   {id:'alc',   name:'אלכוהול',              color:'#FF4F8B'},
   {id:'soft',  name:'מיצים ומשקאות קלים',    color:'#FF9F1C'},
+  {id:'monin', name:'סירופי מונין',          color:'#F0657A'},
   {id:'sweet', name:'סירופים ומתוקים',       color:'#7B5CFF'},
   {id:'fruit', name:'פירות וצמחים',          color:'#2EC4B6'},
-  {id:'extra', name:'קרח ותוספות',           color:'#3A86FF'},
-  {id:'monin', name:'סירופי מונין',          color:'#F0657A'}
+  {id:'extra', name:'קרח ותוספות',           color:'#3A86FF'}
 ];
 
 // [id, name, category, aliases]
@@ -1670,7 +1670,7 @@ if('IntersectionObserver' in window){
 })();
 
 /* auto-update: if a newer version was published, load it (bypasses the browser's saved copy) */
-const APP_VERSION = '18';
+const APP_VERSION = '19';
 (async ()=>{
   try{
     if(!location.protocol.startsWith('http')) return;
