@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#FFC2A8">
+<meta name="theme-color" content="#FFBBAE">
 <meta name="color-scheme" content="light">
 <title>hometails</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -29,8 +29,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --grad:linear-gradient(150deg,#FF9A7E,#F0657A);
-  --bg:#FFB3A3;
+  --grad:linear-gradient(150deg,#FF9288,#F0627F);
+  --bg:#FFADAD;
   --panel:rgba(255,255,255,.92);
   --panel-solid:#FFFDFA;
   --line:rgba(80,40,30,.09);
@@ -62,11 +62,11 @@ input{font:inherit;color:inherit}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* ---------- Background: warm light ---------- */
-.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:linear-gradient(150deg,#FFC2A8,#FF94A0)}
+.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:linear-gradient(150deg,#FFBBAE,#FF8FA8)}
 .glow{position:absolute;width:70vmax;height:70vmax;border-radius:50%;will-change:transform;animation:drift 28s ease-in-out infinite alternate}
-.g1{background:radial-gradient(circle,rgba(255,225,200,.6),transparent 60%);top:-35vmax;right:-25vmax}
-.g2{background:radial-gradient(circle,rgba(245,110,140,.45),transparent 60%);bottom:-40vmax;left:-30vmax;animation-duration:34s;animation-delay:-10s}
-.g3{background:radial-gradient(circle,rgba(255,210,190,.4),transparent 60%);top:25%;left:20%;animation-duration:40s;animation-delay:-20s}
+.g1{background:radial-gradient(circle,rgba(255,215,210,.6),transparent 60%);top:-35vmax;right:-25vmax}
+.g2{background:radial-gradient(circle,rgba(245,105,150,.45),transparent 60%);bottom:-40vmax;left:-30vmax;animation-duration:34s;animation-delay:-10s}
+.g3{background:radial-gradient(circle,rgba(255,200,200,.4),transparent 60%);top:25%;left:20%;animation-duration:40s;animation-delay:-20s}
 .bub{position:absolute;bottom:-60px;border-radius:50%;background:radial-gradient(circle at 32% 30%,rgba(255,255,255,.95) 0 14%,rgba(255,195,200,.42) 15%,rgba(255,130,140,.12) 70%);border:1.5px solid rgba(255,130,140,.38);will-change:transform;animation:rise linear infinite}
 .bub i{position:absolute;inset:0;border-radius:50%;animation:sway 3.2s ease-in-out infinite alternate}
 @keyframes rise{0%{transform:translate3d(0,0,0) scale(.8);opacity:0}8%{opacity:1}50%{transform:translate3d(18px,-55vh,0) scale(1)}92%{opacity:.9}100%{transform:translate3d(-14px,-112vh,0) scale(1.1);opacity:0}}
@@ -1355,7 +1355,7 @@ if('IntersectionObserver' in window){
 })();
 
 /* auto-update: if a newer version was published, load it (bypasses the browser's saved copy) */
-const APP_VERSION = '22';
+const APP_VERSION = '23';
 (async ()=>{
   try{
     if(!location.protocol.startsWith('http')) return;
