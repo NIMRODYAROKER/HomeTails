@@ -374,6 +374,17 @@ footer{max-width:1140px;margin:0 auto;padding:0 18px 120px}
 #surprise.roll svg{animation:roll .6s var(--spring)}
 .csearch[hidden]{display:none}
 .steps li::before{background:var(--grad)!important}
+.filters{align-items:center}
+.nswitch{flex:none;height:40px;display:flex;align-items:center;gap:8px;padding:0 6px;font-size:13.5px;font-weight:500;color:var(--muted)}
+.nswitch .trk{width:34px;height:20px;border-radius:999px;background:var(--soft2);position:relative;transition:background .25s}
+.nswitch .trk i{position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .3s var(--spring)}
+.nswitch[aria-checked="true"]{color:var(--text)}
+.nswitch[aria-checked="true"] .trk{background:#3CC29A}
+.nswitch[aria-checked="true"] .trk i{transform:translateX(-14px)}
+.dice-c{flex:none;margin-inline-start:auto;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--accent);background:transparent;transition:transform .3s var(--spring)}
+.dice-c svg{width:24px;height:24px;stroke:currentColor}
+.dice-c:hover{transform:rotate(-15deg) scale(1.1)}
+#surprise.roll svg{animation:roll .6s var(--spring)}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
@@ -428,9 +439,8 @@ footer{max-width:1140px;margin:0 auto;padding:0 18px 120px}
     </div>
     <div class="filters" role="group" aria-label="סינון וחיפוש">
       <button class="chip2" id="searchToggle" aria-expanded="false" aria-controls="csearch"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>חיפוש</button>
-      <button class="chip2 fpill" data-f="alc" aria-pressed="true">עם אלכוהול</button>
-      <button class="chip2 fpill" data-f="na" aria-pressed="false">בלי אלכוהול</button>
-      <button class="chip2" id="surprise" aria-label="תפתיעו אותי"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="8.5" cy="8.5" r="1.1" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.1" fill="currentColor"/><circle cx="12" cy="12" r="1.1" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.1" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.1" fill="currentColor"/></svg>הפתעה</button>
+      <button class="nswitch" id="naSwitch" role="switch" aria-checked="false"><span class="trk"><i></i></span>בלי אלכוהול</button>
+      <button class="dice-c" id="surprise" aria-label="תפתיעו אותי" title="תפתיעו אותי"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="8.5" cy="8.5" r="1.1" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.1" fill="currentColor"/><circle cx="12" cy="12" r="1.1" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.1" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.1" fill="currentColor"/></svg></button>
     </div>
     <div class="csearch" id="csearch" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
@@ -1323,13 +1333,13 @@ document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click', ()=>{
   renderResults();
 }));
 
-document.querySelectorAll('.fpill').forEach(b=>b.addEventListener('click', ()=>{
-  const turnOn = b.getAttribute('aria-pressed') !== 'true';
-  document.querySelectorAll('.fpill').forEach(x=>x.setAttribute('aria-pressed', turnOn && x===b));
-  alcFilter = turnOn ? b.dataset.f : 'all';
+$('#naSwitch').addEventListener('click', ()=>{
+  const on = $('#naSwitch').getAttribute('aria-checked') !== 'true';
+  $('#naSwitch').setAttribute('aria-checked', on);
+  alcFilter = on ? 'na' : 'alc';
   shown = new Set();
   renderResults();
-}));
+});
 
 function toggleFav(id, btn){
   const on = !favs.has(id);
@@ -1420,7 +1430,7 @@ if('IntersectionObserver' in window){
 })();
 
 /* auto-update: if a newer version was published, load it (bypasses the browser's saved copy) */
-const APP_VERSION = '7';
+const APP_VERSION = '8';
 (async ()=>{
   try{
     if(!location.protocol.startsWith('http')) return;
