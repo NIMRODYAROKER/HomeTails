@@ -414,6 +414,28 @@ footer{max-width:1140px;margin:0 auto;padding:0 18px 120px}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
 @keyframes featIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
+/* ===== ingredient picker ===== */
+#pkSheet{min-height:78vh;min-height:78dvh;display:flex;flex-direction:column}
+#pkSheet .pk-body{flex:1}
+.pk-cats{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:12px -20px 0;padding:0 20px 2px}
+.pk-cats::-webkit-scrollbar{display:none}
+.pkc{flex:none;height:38px;padding:0 13px;border-radius:999px;background:var(--soft2);color:var(--muted);font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:6px;transition:background .2s,color .2s,transform .2s var(--spring)}
+.pkc:active{transform:scale(.94)}
+.pkc svg{width:15px;height:15px;stroke:currentColor}
+.pkc[aria-selected="true"]{background:var(--text);color:#fff}
+.pkc .c{min-width:19px;height:19px;padding:0 5px;border-radius:999px;background:var(--grad);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center}
+.pk-sec h5{width:100%}
+.pk-all{margin-inline-start:auto;font-size:12.5px;font-weight:600;color:var(--accent);padding:6px 2px}
+.pk-chips{display:flex;flex-wrap:wrap;gap:8px}
+.pick{height:42px;padding:0 14px 0 9px;border-radius:999px;border:1.5px solid var(--line2);background:#fff;font-size:14.5px;font-weight:500;display:flex;align-items:center;gap:7px;transition:background .2s,border-color .2s,color .2s,transform .2s var(--spring);animation:tokIn .3s var(--spring) both}
+.pick:active{transform:scale(.94)}
+.pick .box{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--line2);display:grid;place-items:center;flex:none;transition:background .2s,border-color .2s}
+.pick .box svg{width:11px;height:11px;stroke:var(--accent);transform:scale(0);transition:transform .3s var(--spring)}
+.pick[aria-pressed="true"]{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 6px 14px -8px rgba(240,101,122,.8)}
+.pick[aria-pressed="true"] .box{background:#fff;border-color:#fff}
+.pick[aria-pressed="true"] .box svg{transform:none}
+.pk-empty{color:var(--muted);padding:28px 0;text-align:center}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
@@ -505,7 +527,8 @@ footer{max-width:1140px;margin:0 auto;padding:0 18px 120px}
     <button class="close" data-close aria-label="סגירה"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="pk-head">
       <h3 id="pkTitle">כל המרכיבים</h3>
-      <input class="pk-search" id="pkSearch" type="search" placeholder="חיפוש" autocomplete="off" aria-label="חיפוש ברשימה">
+      <input class="pk-search" id="pkSearch" type="search" placeholder="חיפוש מרכיב" autocomplete="off" aria-label="חיפוש ברשימה">
+      <div class="pk-cats" id="pkCats" role="tablist" aria-label="קטגוריות"></div>
     </div>
     <div class="pk-body" id="pkBody"></div>
     <div class="pk-foot"><button class="done press b-primary" data-close id="pkDone">סיום</button></div>
@@ -1229,16 +1252,29 @@ function pickDD(k){
 }
 
 /* full picker sheet */
+let pkCat = 'all';
+const PK_SHORT = {alc:'אלכוהול', soft:'משקאות', sweet:'מתוקים', fruit:'פירות', extra:'תוספות', monin:'מונין'};
+const catIcon = id => `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${CAT_ICONS[id]}</svg>`;
+function renderPkCats(){
+  const cnt = id => INGS.filter(i=>i.cat===id && selected.has(i.id)).length;
+  const nSel = selected.size;
+  const chip = (id, label, n, icon='') => `<button class="pkc" role="tab" data-cat="${id}" aria-selected="${pkCat===id}">${icon}${label}${n?`<span class="c">${n}</span>`:''}</button>`;
+  $('#pkCats').innerHTML = chip('all','הכל',0) + chip('sel','נבחרו',nSel) + CATS.map(c=>chip(c.id, PK_SHORT[c.id]||c.name, cnt(c.id), catIcon(c.id))).join('');
+}
 function renderPicker(){
   const q = norm($('#pkSearch').value);
+  const cats = (pkCat==='all' || pkCat==='sel') ? CATS : CATS.filter(c=>c.id===pkCat);
   let html = '';
-  for(const c of CATS){
-    const list = INGS.filter(i=>i.cat===c.id && matchesQuery(i,q));
+  for(const c of cats){
+    let list = INGS.filter(i=>i.cat===c.id && matchesQuery(i,q));
+    if(pkCat==='sel') list = list.filter(i=>selected.has(i.id));
     if(!list.length) continue;
-    html += `<div class="pk-sec"><h5><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${CAT_ICONS[c.id]}</svg>${c.name}</h5>
-      <div class="pk-list">${list.map(i=>`<button class="row" data-id="${i.id}" aria-pressed="${selected.has(i.id)}"><span class="box">${CHECK}</span>${esc(i.name)}</button>`).join('')}</div></div>`;
+    const full = INGS.filter(i=>i.cat===c.id).every(i=>selected.has(i.id));
+    html += `<div class="pk-sec"><h5>${catIcon(c.id)}${c.name}${pkCat!=='sel' && !q ? `<button class="pk-all" data-all="${c.id}">${full?'ניקוי':'סמן הכל'}</button>`:''}</h5>
+      <div class="pk-chips">${list.map(i=>`<button class="pick" data-id="${i.id}" aria-pressed="${selected.has(i.id)}"><span class="box">${CHECK}</span>${esc(i.name)}</button>`).join('')}</div></div>`;
   }
-  $('#pkBody').innerHTML = html || '<p style="color:var(--muted);padding:20px 0">לא נמצא</p>';
+  if(!html) html = `<p class="pk-empty">${pkCat==='sel' ? 'עוד לא בחרתם מרכיבים' : 'לא נמצא מרכיב כזה'}</p>`;
+  $('#pkBody').innerHTML = html;
   updatePickerDone();
 }
 function updatePickerDone(){
@@ -1452,7 +1488,7 @@ $('#field').addEventListener('click', e=>{
     afterChange();
     return;
   }
-  if(e.target.closest('#moreTok')){ $('#pkSearch').value=''; renderPicker(); openModal($('#picker'), $('#pkSearch')); return; }
+  if(e.target.closest('#moreTok')){ $('#pkSearch').value=''; pkCat='sel'; renderPkCats(); renderPicker(); openModal($('#picker'), document.querySelector('#pkCats .pkc')); return; }
   $('#q').focus();
 });
 
@@ -1488,22 +1524,37 @@ $('#dd').addEventListener('click', e=>{
 
 $('#browse').addEventListener('click', ()=>{
   $('#pkSearch').value = '';
-  renderPicker();
-  openModal($('#picker'), $('#pkSearch'));
+  pkCat='all'; renderPkCats(); renderPicker();
+  openModal($('#picker'), document.querySelector('#pkCats .pkc'));
 });
 $('#pkSearch').addEventListener('input', renderPicker);
 $('#pkBody').addEventListener('click', e=>{
-  const row = e.target.closest('.row');
+  const all = e.target.closest('.pk-all');
+  if(all){
+    const ids = INGS.filter(i=>i.cat===all.dataset.all).map(i=>i.id);
+    const full = ids.every(id=>selected.has(id));
+    ids.forEach(id=> full ? selected.delete(id) : selected.add(id));
+    renderPicker(); renderPkCats(); afterChange();
+    return;
+  }
+  const row = e.target.closest('.pick');
   if(!row) return;
   const id = row.dataset.id;
   const on = !selected.has(id);
   on ? selected.add(id) : selected.delete(id);
   row.setAttribute('aria-pressed', on);
-  updatePickerDone();
+  updatePickerDone(); renderPkCats();
   const unlocked = afterChange();
-  if(unlocked.length){ const r = row.getBoundingClientRect(); sparks(r.left + 20, r.top + r.height/2); }
+  if(unlocked.length){ const r = row.getBoundingClientRect(); sparks(r.left + r.width/2, r.top + r.height/2); }
 });
-
+$('#pkCats').addEventListener('click', e=>{
+  const b = e.target.closest('.pkc');
+  if(!b) return;
+  pkCat = b.dataset.cat;
+  renderPkCats(); renderPicker();
+  $('#pkSheet').scrollTop = 0;
+  b.scrollIntoView({inline:'nearest', block:'nearest'});
+});
 
 $('#clear').addEventListener('click', ()=>{
   selected.clear(); custom = [];
@@ -1618,7 +1669,7 @@ if('IntersectionObserver' in window){
 })();
 
 /* auto-update: if a newer version was published, load it (bypasses the browser's saved copy) */
-const APP_VERSION = '17';
+const APP_VERSION = '18';
 (async ()=>{
   try{
     if(!location.protocol.startsWith('http')) return;
