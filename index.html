@@ -479,6 +479,17 @@ footer{max-width:1140px;margin:0 auto;padding:0 18px 120px}
 .feat-gl{left:58px;top:0;bottom:0;margin:auto 0;width:54px;height:76px}
 .feat-gl svg{width:54px;height:76px}
 .shuffle{top:0;bottom:0;margin:auto 0;left:12px;width:36px;height:36px}
+.fr{position:absolute;will-change:transform;animation:frf ease-in-out infinite alternate}
+.fr svg{width:100%;display:block;animation:spin linear infinite;filter:drop-shadow(0 8px 14px rgba(180,50,80,.2))}
+@keyframes frf{0%{transform:translate(0,0)}100%{transform:translate(25px,-40px)}}
+:root{--panel:rgba(255,255,255,.5)}
+.panel{border-color:rgba(255,255,255,.7);backdrop-filter:blur(5px) saturate(1.1);-webkit-backdrop-filter:blur(5px) saturate(1.1)}
+.feat{padding:12px 16px;min-height:0}
+.feat-gl{display:none}
+.feat-txt{padding-left:150px}
+.feat h3{font-size:20px;margin:1px 0 1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feat p{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feat-cta{position:absolute;left:58px;top:0;bottom:0;margin:auto 0!important;height:34px;line-height:34px;padding:0 16px}
 </style>
 
 </head>
@@ -1370,23 +1381,23 @@ if('IntersectionObserver' in window){
     b.style.cssText = `width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-duration:${12+Math.random()*16}s;animation-delay:${-Math.random()*26}s`;
     bg.appendChild(b);
   }
-  // a few citrus wheels drifting around
-  const wheel = (rind,flesh)=>`<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="${rind}"/><circle cx="20" cy="20" r="15" fill="#FFF8EE"/><circle cx="20" cy="20" r="13.5" fill="${flesh}"/>${[0,45,90,135].map(a=>`<path d="M20 20 L${20+13.5*Math.cos(a*Math.PI/180)} ${20+13.5*Math.sin(a*Math.PI/180)} M20 20 L${20-13.5*Math.cos(a*Math.PI/180)} ${20-13.5*Math.sin(a*Math.PI/180)}" stroke="#FFF8EE" stroke-width="1.6"/>`).join('')}<circle cx="20" cy="20" r="2.2" fill="#FFF8EE"/></svg>`;
-  const kinds = [wheel('#FF9F45','#FFC37A'), wheel('#FF6F9E','#FFA8C5'), wheel('#9BD36A','#C9EE9E')];
-  const m = innerWidth < 640 ? 3 : 6;
-  for(let i=0;i<m;i++){
-    const w = document.createElement('span');
-    w.className = 'slice';
-    const s = 26 + Math.random()*30;
-    w.style.cssText = `width:${s}px;height:${s}px;left:${5+Math.random()*90}%;top:${10+Math.random()*80}%;animation-duration:${9+Math.random()*8}s;animation-delay:${-Math.random()*10}s`;
-    w.innerHTML = kinds[i%3];
-    w.firstChild.style.animationDuration = (20+Math.random()*20)+'s';
-    bg.appendChild(w);
-  }
+  // fruit slices floating at different depths (blurred ones look farther away)
+  const fruit = (rind,pith,flesh)=>{let seg='';for(let i=0;i<8;i++){const a=i*45*Math.PI/180;seg+=`<path d="M50 50 L${(50+38*Math.cos(a)).toFixed(1)} ${(50+38*Math.sin(a)).toFixed(1)}" stroke="${pith}" stroke-width="3"/>`}return `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="${rind}"/><circle cx="50" cy="50" r="43" fill="${pith}"/><circle cx="50" cy="50" r="39" fill="${flesh}"/>${seg}<circle cx="50" cy="50" r="4" fill="${pith}"/></svg>`};
+  const F = [['#FF8A3D','#FFF0DC','#FFB25C'],['#7CC24A','#F2FBE4','#A8DB6E'],['#F5C93A','#FFF8DA','#FFE07A'],['#F2667A','#FFE9E4','#FF9A8E']];
+  const P = [[-8,8,120,0],[78,4,70,3],[70,40,150,6],[-10,58,90,2],[60,78,110,0],[20,30,46,1],[40,92,60,4],[88,66,40,1]];
+  const k = innerWidth < 640 ? 1 : 1.6;
+  P.forEach((p,i)=>{
+    const d = document.createElement('div');
+    d.className = 'fr';
+    d.style.cssText = `left:${p[0]}%;top:${p[1]}%;width:${p[2]*k}px;filter:blur(${p[3]}px);opacity:${p[3]>3?.55:.8};animation-duration:${18+i*3}s;animation-delay:-${i*2}s`;
+    d.innerHTML = fruit(...F[i%4]);
+    d.firstChild.style.animationDuration = (50+i*6)+'s';
+    bg.appendChild(d);
+  });
 })();
 
 /* auto-update: if a newer version was published, load it (bypasses the browser's saved copy) */
-const APP_VERSION = '26';
+const APP_VERSION = '27';
 (async ()=>{
   try{
     if(!location.protocol.startsWith('http')) return;
