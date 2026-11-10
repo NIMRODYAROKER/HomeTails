@@ -469,32 +469,23 @@ footer{max-width:1140px;margin:0 auto;padding:0 18px 120px}
 .browse b:empty{display:none}
 .browse b:not(:empty)::before{content:none}
 .browse svg.bw-ch{width:18px;height:18px;stroke:var(--accent);flex:none;margin-inline-start:2px}
-.feat{min-height:0;padding:12px 18px;border-radius:22px}
+/* surprise card: compact row  [glass | text | button | shuffle] */
+.feat{display:grid;grid-template-columns:40px minmax(0,1fr) auto 34px;align-items:center;gap:12px;min-height:0;padding:14px 14px 14px 12px;border-radius:22px}
 .feat::before{width:160px;height:160px;left:-40px;top:-60px}
-.feat-txt{padding-left:118px}
-.feat small{font-size:12px}
-.feat h3{font-size:22px;margin:2px 0 2px}
-.feat p{font-size:12.5px}
-.feat-cta{margin-top:7px;font-size:13px;padding:5px 14px}
-.feat-gl{left:58px;top:0;bottom:0;margin:auto 0;width:54px;height:76px}
-.feat-gl svg{width:54px;height:76px}
-.shuffle{top:0;bottom:0;margin:auto 0;left:12px;width:36px;height:36px}
+.feat-gl,.feat-txt,.feat-cta,.shuffle{position:relative}
+.feat-gl{left:auto;bottom:auto;width:40px;height:54px;display:grid;place-items:center}
+.feat-gl svg{width:40px;height:54px}
+.feat-txt{padding:0}
+.feat small{font-size:11.5px;white-space:nowrap;opacity:.85}
+.feat h3{font-size:18px;margin:1px 0 2px;line-height:1.15}
+.feat p{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feat-cta{margin:0;height:32px;line-height:32px;padding:0 14px;font-size:13px;white-space:nowrap}
+.shuffle{top:auto;left:auto;width:34px;height:34px}
 .fr{position:absolute;will-change:transform;opacity:.5!important;animation:frf ease-in-out infinite alternate}
 .fr svg{width:100%;display:block;animation:spin linear infinite;filter:drop-shadow(0 8px 14px rgba(180,50,80,.2))}
 @keyframes frf{0%{transform:translate(0,0)}100%{transform:translate(25px,-40px)}}
 :root{--panel:rgba(255,255,255,.5)}
 .panel{border-color:rgba(255,255,255,.7);backdrop-filter:blur(5px) saturate(1.1);-webkit-backdrop-filter:blur(5px) saturate(1.1)}
-.feat{padding:12px 16px;min-height:0}
-.feat-gl{left:auto;right:10px;top:0;bottom:0;margin:auto 0;width:44px;height:56px;display:grid;place-items:center;background:rgba(255,255,255,.2);border-radius:14px}
-.feat-gl svg{width:34px;height:44px}
-.feat-txt{padding-right:50px;padding-left:100px}
-.feat small{white-space:nowrap}
-.shuffle{left:10px!important;width:34px!important;height:34px!important}
-.feat-cta{left:48px!important;height:30px!important;line-height:30px!important;padding:0 12px!important;font-size:12.5px!important}
-.feat-txt{padding-left:150px}
-.feat h3{font-size:17px;margin:1px 0 2px;line-height:1.15}
-.feat p{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.feat-cta{position:absolute;left:58px;top:0;bottom:0;margin:auto 0!important;height:34px;line-height:34px;padding:0 16px}
 </style>
 
 </head>
@@ -540,13 +531,13 @@ footer{max-width:1140px;margin:0 auto;padding:0 18px 120px}
       <h2 id="t2">מה אפשר להכין?</h2>
     </div>
     <div class="feat" id="feat" role="button" tabindex="0" hidden>
+      <div class="feat-gl" id="featGl"></div>
       <div class="feat-txt">
         <small>קוקטייל בהפתעה</small>
         <h3 id="featName"></h3>
         <p id="featIngs"></p>
-        <span class="feat-cta" id="featCta">לגלות</span>
       </div>
-      <div class="feat-gl" id="featGl"></div>
+      <span class="feat-cta" id="featCta">לגלות</span>
       <button class="shuffle" id="shuffle" aria-label="קוקטייל אחר בהפתעה" title="קוקטייל אחר"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg></button>
     </div>
     <div class="res-top">
@@ -1402,7 +1393,7 @@ if('IntersectionObserver' in window){
 })();
 
 /* auto-update: if a newer version was published, load it (bypasses the browser's saved copy) */
-const APP_VERSION = '29';
+const APP_VERSION = '30';
 (async ()=>{
   try{
     if(!location.protocol.startsWith('http')) return;
