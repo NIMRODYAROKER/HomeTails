@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FFF2F1">
+<meta name="color-scheme" content="light">
+<title>hometails</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="description" content="hometails: מסמנים מה יש בבית, ומגלים אילו קוקטיילים אפשר להכין.">
+<meta property="og:title" content="hometails">
+<meta property="og:description" content="מה שותים הערב? מסמנים מה יש בבית ומגלים אילו קוקטיילים אפשר להכין.">
+<meta property="og:image" content="icon-512.png">
+<meta name="apple-mobile-web-app-title" content="hometails">
+<meta name="application-name" content="hometails">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFF2F1;
+  --panel:rgba(255,255,255,.78);
+  --panel-solid:#FFFDFA;
+  --line:rgba(80,40,30,.09);
+  --line2:rgba(80,40,30,.16);
+  --text:#2E1F1A;
+  --muted:#8C766C;
+  --soft:rgba(80,40,30,.045);
+  --soft2:rgba(80,40,30,.08);
+  --accent:#F0657A;
+  --accent-deep:#CC4258;
+  --accent-ink:#FFFFFF;
+  --accent-soft:rgba(240,101,122,.12);
+  --mint:#1E7F60; --mint-bg:rgba(30,127,96,.1);
+  --amber:#B05400; --amber-bg:rgba(255,150,40,.14);
+  --r:24px;
+  --spring:cubic-bezier(.2,1.25,.35,1);
+  --press:0 3px 0 rgba(80,40,30,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Rubik",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.5;font-size:16px;
+  -webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;
+}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+input{font:inherit;color:inherit}
+::placeholder{color:#BFA79C}
+:focus-visible{outline:2.5px solid var(--accent);outline-offset:3px;border-radius:14px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- Background: warm light ---------- */
+.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:var(--bg)}
+.glow{position:absolute;width:70vmax;height:70vmax;border-radius:50%;will-change:transform;animation:drift 28s ease-in-out infinite alternate}
+.g1{background:radial-gradient(circle,rgba(255,140,160,.38),transparent 60%);top:-35vmax;right:-25vmax}
+.g2{background:radial-gradient(circle,rgba(255,175,160,.4),transparent 60%);bottom:-40vmax;left:-30vmax;animation-duration:34s;animation-delay:-10s}
+.g3{background:radial-gradient(circle,rgba(255,190,170,.3),transparent 60%);top:25%;left:20%;animation-duration:40s;animation-delay:-20s}
+.bub{position:absolute;bottom:-60px;border-radius:50%;background:radial-gradient(circle at 32% 30%,rgba(255,255,255,.95) 0 14%,rgba(255,195,200,.42) 15%,rgba(255,130,140,.12) 70%);border:1.5px solid rgba(255,130,140,.38);will-change:transform;animation:rise linear infinite}
+.bub i{position:absolute;inset:0;border-radius:50%;animation:sway 3.2s ease-in-out infinite alternate}
+@keyframes rise{0%{transform:translate3d(0,0,0) scale(.8);opacity:0}8%{opacity:1}50%{transform:translate3d(18px,-55vh,0) scale(1)}92%{opacity:.9}100%{transform:translate3d(-14px,-112vh,0) scale(1.1);opacity:0}}
+.slice{position:absolute;opacity:.55;will-change:transform;animation:floaty ease-in-out infinite alternate}
+.slice svg{width:100%;height:100%;animation:spin linear infinite;animation-duration:inherit}
+@keyframes floaty{0%{transform:translate(0,0)}100%{transform:translate(30px,-60px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pop{position:absolute;border-radius:50%;border:2px solid rgba(255,140,70,.5);animation:pop .5s ease-out forwards;pointer-events:none}
+@keyframes pop{from{transform:scale(1);opacity:1}to{transform:scale(1.8);opacity:0}}
+@keyframes drift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(8vmax,5vmax) scale(1.1)}100%{transform:translate(-5vmax,10vmax) scale(.92)}}
+.dots{position:absolute;inset:0;background-image:radial-gradient(rgba(225,105,115,.17) 1px,transparent 1.3px);background-size:24px 24px;-webkit-mask-image:radial-gradient(ellipse at 50% 0%,#000 0%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 0%,#000 0%,transparent 75%)}
+.grain{position:absolute;inset:-50%;opacity:.05;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+
+/* ---------- Button system ---------- */
+/* every button is a soft "pressable" pill: a small bottom edge that sinks when pressed */
+.press{transition:transform .15s ease,box-shadow .15s ease,background .2s,border-color .2s,color .2s}
+.press:active{transform:translateY(2px)}
+.b-primary{background:var(--accent);color:var(--accent-ink);font-weight:600;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 4px 0 var(--accent-deep),0 12px 22px -12px var(--accent)}
+.b-primary:hover{background:#F47A8C}
+.b-primary:active{box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 1px 0 var(--accent-deep)}
+.b-ghost{background:#fff;border:1.5px solid var(--line2);box-shadow:var(--press)}
+.b-ghost:hover{border-color:var(--accent);color:var(--accent)}
+.b-ghost:active{box-shadow:0 1px 0 rgba(80,40,30,.13)}
+/* X buttons: small dark circle with a white cross, turns orange and spins */
+.xb{width:22px;height:22px;border-radius:50%;background:var(--text);display:grid;place-items:center;flex:none;transition:transform .3s var(--spring),background .2s}
+.xb svg{width:9px;height:9px;stroke:#fff}
+.xb:hover{background:var(--accent);transform:rotate(90deg)}
+
+/* ---------- Header ---------- */
+.bar{position:sticky;top:0;z-index:30;transition:background .25s,box-shadow .25s}
+.bar.scrolled{background:rgba(255,240,244,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 1px 0 var(--line)}
+.bar-in{max-width:1140px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;gap:10px}
+.logo{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#FFA9A6 0%,#EC5577 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 8px 18px -8px rgba(255,79,139,.7);transition:transform .4s var(--spring)}
+.logo svg{width:32px;height:32px}
+.bar-in:hover .logo{transform:rotate(-8deg) scale(1.06)}
+.brand{font-weight:800;font-size:22px;letter-spacing:-.9px;line-height:1}
+.brand b{font-weight:800;background:linear-gradient(90deg,#F0657A,#FF4F8B);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero{max-width:1140px;margin:0 auto;padding:max(28px,env(safe-area-inset-top)) 18px 26px}
+.hero h1{font-size:clamp(36px,7.5vw,62px);font-weight:300;letter-spacing:-1.5px;line-height:1.02}
+.hero h1 b{font-weight:800;background:linear-gradient(100deg,#F0657A,#FFAFA8 55%,#F0657A);-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% 100%;animation:shine 6s ease-in-out infinite}
+@keyframes shine{0%,100%{background-position:0% 0}50%{background-position:100% 0}}
+
+/* ---------- Layout ---------- */
+.wrap{max-width:1140px;margin:0 auto;padding:0 18px 120px;display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+.wrap>*{min-width:0}
+@media (min-width:980px){
+  .wrap{grid-template-columns:400px minmax(0,1fr);align-items:start;gap:24px;padding-bottom:48px}
+  .panel-ings{position:sticky;top:20px}
+}
+.panel{background:var(--panel);border:1px solid rgba(255,255,255,.9);border-radius:var(--r);padding:18px;box-shadow:0 1px 2px rgba(80,40,30,.04),0 20px 40px -24px rgba(200,80,100,.3);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.ph{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.ph h2{font-size:20px;font-weight:700;letter-spacing:-.4px}
+.icons{display:flex;gap:8px}
+.tools{display:flex;align-items:center;gap:4px}
+.clear-all{min-height:40px;padding:0 6px;font-size:14px;font-weight:600;color:var(--accent);animation:fadeIn .25s ease;transition:opacity .2s}
+.clear-all:hover{text-decoration:underline;text-underline-offset:4px}
+.clear-all[hidden]{display:none}
+.spark-btn{width:40px;height:40px;display:grid;place-items:center;color:var(--accent);transition:transform .35s var(--spring)}
+.spark-btn svg{width:22px;height:22px}
+.spark-btn:hover{transform:rotate(-15deg) scale(1.15)}
+.spark-btn:active{transform:scale(.85)}
+.tool{height:36px;width:38px;padding:0;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:5px;color:var(--accent);font-size:13.5px;font-weight:600;transition:background .2s,color .2s,transform .2s var(--spring)}
+.tool svg{width:17px;height:17px;transition:transform .35s var(--spring)}
+.tool:hover{background:var(--accent);color:#fff}
+.tool:hover svg{transform:rotate(-15deg) scale(1.1)}
+.tool:active{transform:scale(.92)}
+.tool.danger{color:#B9876A}
+.tool.danger:hover{background:#E5484D;color:#fff}
+.tool.danger:hover svg{transform:none}
+.tool .lid{transform-box:fill-box;transform-origin:100% 100%;transition:transform .35s var(--spring)}
+.tool.danger:hover .lid{transform:translate(1px,-2px) rotate(18deg)}
+.tool-sep{width:1px;height:18px;background:#FFC4C8}
+.ibtn{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;color:var(--muted)}
+.ibtn svg{width:18px;height:18px}
+
+/* ---------- Token field ---------- */
+.field-wrap{position:relative}
+.field{
+  display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:58px;padding:9px 14px;
+  border:1.5px solid var(--line2);border-radius:22px;background:#fff;cursor:text;
+  transition:border-color .2s,box-shadow .2s;
+}
+.field:focus-within{border-color:var(--accent);box-shadow:0 0 0 5px rgba(240,101,122,.14)}
+.field svg.s{width:18px;height:18px;stroke:var(--muted);flex:none}
+.tok{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 6px 0 12px;border-radius:999px;background:#FFEDEE;border:1px solid #FFD5D8;font-size:14px;font-weight:500;animation:tokIn .3s var(--spring)}
+.tok.custom{background:#fff;border-style:dashed;border-color:var(--line2)}
+.tok.more{padding:0 12px;color:var(--accent-ink);background:var(--accent);border-color:var(--accent);font-weight:700;cursor:pointer}
+@keyframes tokIn{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+.field input{flex:1;min-width:110px;height:38px;background:none;border:0;font-size:16px}
+.field input:focus{outline:none}
+
+.dd{position:absolute;top:calc(100% + 8px);right:0;left:0;z-index:20;list-style:none;background:#fff;border:1px solid var(--line);border-radius:18px;padding:6px;box-shadow:0 24px 48px -18px rgba(170,60,80,.3);animation:ddIn .2s ease-out}
+.dd[hidden]{display:none}
+@keyframes ddIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.opt{display:flex;align-items:center;gap:10px;width:100%;min-height:46px;padding:0 12px;border-radius:12px;font-size:15px;text-align:right}
+.opt small{color:var(--muted);font-size:12.5px;margin-inline-start:auto}
+.opt[aria-selected="true"],.opt:hover{background:#FFEDEE}
+.opt .on{color:var(--accent);font-size:12.5px;font-weight:600;margin-inline-start:auto}
+.opt.add-new{color:var(--accent);font-weight:500}
+
+.browse{
+  margin-top:14px;width:100%;height:52px;border-radius:999px;
+  display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:500;
+}
+.browse svg{width:17px;height:17px;stroke:currentColor}
+.browse b{font-weight:700;color:var(--accent);margin-inline-start:2px}
+.browse b:not(:empty)::before{content:"·";margin-inline-end:6px;color:var(--muted)}
+
+/* ---------- Results ---------- */
+.res-top{display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.tabs{position:relative;flex:1;display:grid;grid-template-columns:repeat(3,1fr) .8fr;background:var(--soft2);border-radius:999px;padding:4px}
+.tab-ind{position:absolute;top:4px;bottom:4px;right:4px;width:calc((100% - 8px)*.2632);background:#fff;border-radius:999px;box-shadow:0 3px 0 rgba(80,40,30,.1),0 6px 14px -8px rgba(80,40,30,.3);transition:transform .45s var(--spring)}
+.tab{position:relative;z-index:1;min-height:44px;font-weight:500;font-size:15px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:7px;transition:color .25s}
+.tab[aria-selected="true"]{color:var(--text);font-weight:600}
+.tab .n{font-size:12.5px;font-weight:700;min-width:22px;height:22px;padding:0 6px;border-radius:999px;display:grid;place-items:center;color:var(--muted)}
+.tab[aria-selected="true"] .n{background:var(--accent);color:#fff}
+.dice{margin-inline-start:auto;width:44px;height:44px;flex:none;border-radius:50%;display:grid;place-items:center}
+.dice svg{width:22px;height:22px;stroke:#fff}
+.dice:hover svg{transform:rotate(-12deg)}
+.dice svg{transition:transform .3s var(--spring)}
+.dice.roll svg{animation:roll .6s var(--spring)}
+@keyframes roll{to{transform:rotate(360deg) scale(1.1)}}
+.bump{animation:bump .45s var(--spring)}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.45)}100%{transform:scale(1)}}
+
+.filters{display:flex;gap:8px;align-items:center;margin-bottom:16px}
+.fpill{height:40px;padding:0 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--muted)}
+.fpill[aria-pressed="true"]{background:var(--text);border-color:var(--text);color:#fff;box-shadow:0 3px 0 #000}
+.fpill[aria-pressed="true"]:hover{color:#fff;border-color:var(--text)}
+
+.grid{display:grid;gap:12px}
+@media (min-width:640px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.card{
+  position:relative;overflow:hidden;
+  display:grid;grid-template-columns:62px 1fr 30px;gap:4px 14px;align-items:center;
+  background:#fff;border:1px solid var(--line);border-radius:22px;padding:12px;text-align:right;width:100%;
+  box-shadow:0 3px 0 rgba(80,40,30,.06);
+  transition:transform .3s var(--spring),box-shadow .3s,border-color .25s;
+}
+.card::after{content:"";position:absolute;inset:auto auto -70px -50px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,var(--c),transparent 65%);opacity:0;transition:opacity .35s;pointer-events:none}
+.card:hover{transform:translateY(-4px);border-color:#FFC9CE;box-shadow:0 6px 0 rgba(80,40,30,.06),0 22px 36px -20px rgba(225,90,110,.4)}
+.card:hover::after{opacity:.28}
+.card:active{transform:translateY(0)}
+.card.enter{animation:cardIn .5s var(--spring) both}
+@keyframes cardIn{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:none}}
+.gl{width:62px;height:70px;border-radius:20px;display:grid;place-items:center;grid-row:span 2;background:#FFF2F2}
+.gl svg{width:42px;height:56px;overflow:visible;transition:transform .45s var(--spring)}
+.card:hover .gl svg{transform:rotate(-9deg) scale(1.08)}
+.liq{transform-box:fill-box;transform-origin:50% 100%}
+.card.enter .liq,.sheet .liq{animation:fill 1s .12s cubic-bezier(.3,.7,.3,1) both}
+@keyframes fill{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.card h3{font-size:17px;font-weight:700;line-height:1.2;letter-spacing:-.3px;position:relative;z-index:1}
+.meta{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--muted);grid-column:2;position:relative;z-index:1}
+.meta .t{display:flex;align-items:center;gap:3px}
+.meta .t svg{width:12px;height:12px;stroke:currentColor}
+.badge{font-size:11.5px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--soft2);color:#6B5A4D}
+.badge.a0{background:var(--mint-bg);color:var(--mint)}
+.badge.a3{background:rgba(230,70,50,.12);color:#C2361F}
+.dl{display:inline-flex;gap:3px}
+.dl i{width:5px;height:5px;border-radius:50%;background:rgba(80,40,30,.15)}
+.dl i.f{background:var(--accent)}
+.go{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#FFEDEE;grid-row:1 / span 2;grid-column:3;transition:transform .3s var(--spring),background .2s;position:relative;z-index:1}
+.go svg{width:14px;height:14px;stroke:var(--accent)}
+.card:hover .go{background:var(--accent);transform:translateX(-4px)}
+.card:hover .go svg{stroke:#fff}
+.fav-tab svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2}
+.fav-tab[aria-selected="true"] svg{fill:var(--accent);stroke:var(--accent)}
+.heart{position:absolute;top:10px;left:46px;z-index:2;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;transition:transform .2s var(--spring),background .2s}
+.heart:hover{background:var(--accent-soft)}
+.heart:active{transform:scale(.85)}
+.heart svg{width:19px;height:19px;fill:none;stroke:#C9B3A8;stroke-width:2;transition:fill .2s,stroke .2s}
+.heart[aria-pressed="true"] svg{fill:var(--accent);stroke:var(--accent)}
+.heart.beat{animation:beat .5s var(--spring)}
+@keyframes beat{0%{transform:scale(1)}35%{transform:scale(1.45)}100%{transform:scale(1)}}
+.heart.big{position:absolute;top:16px;right:16px;left:auto;width:44px;height:44px;background:#fff;border:1.5px solid var(--line2);box-shadow:var(--press)}
+.heart.big svg{width:21px;height:21px}
+.card h3{padding-left:30px}
+.slot{grid-column:1 / -1;position:relative;z-index:1}
+.slot:empty{display:none}
+.status{display:flex;align-items:center;gap:6px;font-size:13px;border-radius:14px;padding:7px 11px;margin-top:8px}
+.status svg{width:13px;height:13px;flex:none;stroke:currentColor}
+.status.miss{background:var(--amber-bg);color:var(--amber)}
+.status.swap{background:var(--mint-bg);color:var(--mint)}
+.status b{font-weight:600}
+.empty{grid-column:1/-1;text-align:center;padding:34px 12px;color:var(--muted)}
+.empty svg{width:64px;height:86px;margin-bottom:8px;overflow:visible;animation:float 3.4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-6px) rotate(4deg)}}
+.empty h3{color:var(--text);font-size:17px;font-weight:600}
+
+/* ---------- Sheets ---------- */
+.modal{position:fixed;inset:0;z-index:50;background:rgba(70,30,20,.32);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:flex-end;justify-content:center;animation:fadeIn .2s ease}
+.modal[hidden]{display:none}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.sheet{
+  background:var(--panel-solid);width:100%;max-width:620px;max-height:93vh;max-height:93dvh;overflow-y:auto;overscroll-behavior:contain;
+  border-radius:30px 30px 0 0;padding-bottom:env(safe-area-inset-bottom);position:relative;
+  animation:sheetUp .5s var(--spring);
+}
+@keyframes sheetUp{from{transform:translateY(80px);opacity:.3}to{transform:none;opacity:1}}
+@media (min-width:720px){.modal{align-items:center;padding:24px}.sheet{border-radius:30px;max-height:88vh}}
+.close{position:sticky;top:12px;float:left;margin:12px 12px 0 0;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;z-index:3;background:#fff;border:1.5px solid var(--line2);box-shadow:var(--press);transition:transform .3s var(--spring),background .2s,border-color .2s}
+.close:hover{transform:rotate(90deg);background:var(--text);border-color:var(--text)}
+.close svg{width:13px;height:13px;stroke:var(--text);transition:stroke .2s}
+.close:hover svg{stroke:#fff}
+.s-hero{position:relative;text-align:center;padding:30px 20px 20px;overflow:hidden}
+.s-hero::before{content:"";position:absolute;width:360px;height:360px;left:50%;top:-130px;margin-left:-180px;border-radius:50%;background:radial-gradient(circle,var(--c),transparent 62%);opacity:.35}
+.s-hero .gl{position:relative;width:116px;height:130px;border-radius:34px;margin:0 auto 14px;background:#fff;box-shadow:0 4px 0 rgba(80,40,30,.06),0 20px 34px -18px rgba(210,80,100,.45);animation:float 4s ease-in-out infinite}
+.s-hero .gl svg{width:72px;height:96px}
+.s-hero h2{position:relative;font-size:31px;font-weight:800;letter-spacing:-.8px;line-height:1.1}
+.s-hero .en{position:relative;font-size:14px;color:var(--muted);margin-top:4px;letter-spacing:.4px}
+.taste{position:relative;display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.taste span{font-size:12.5px;font-weight:500;padding:4px 12px;border-radius:999px;background:#fff;border:1px solid var(--line2)}
+.sheet-body{padding:6px 20px 28px;display:grid;gap:24px}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.fact{padding:12px 6px;text-align:center;border-radius:18px;background:#fff;border:1px solid var(--line)}
+.fact svg{width:18px;height:18px;stroke:var(--accent);margin-bottom:4px}
+.fact b{display:block;font-size:13.5px;font-weight:600}
+.fact em{display:block;font-style:normal;font-size:11px;color:var(--muted)}
+.sec h4{font-size:17px;font-weight:700;margin-bottom:10px}
+.sec p{font-size:15px}
+.ing-list{list-style:none;display:grid}
+.ing-list li{display:flex;gap:10px;align-items:flex-start;font-size:15px;padding:10px 0;border-bottom:1px solid var(--line)}
+.ing-list li:last-child{border-bottom:0}
+.st{width:22px;height:22px;border-radius:50%;flex:none;display:grid;place-items:center;margin-top:1px}
+.st svg{width:11px;height:11px}
+.st.have,.st.sub{background:var(--mint-bg);color:var(--mint)}
+.st.need{background:var(--amber-bg);color:var(--amber)}
+.st.opt{background:var(--soft2);color:var(--muted)}
+.amt{font-weight:700}
+.note{display:block;font-size:13px;color:var(--muted)}
+.steps{list-style:none;counter-reset:s;display:grid;gap:14px}
+.steps li{counter-increment:s;display:flex;gap:12px;font-size:15px}
+.steps li::before{content:counter(s);width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:13px;display:grid;place-items:center;flex:none;box-shadow:0 2px 0 var(--accent-deep)}
+.tip{display:flex;gap:8px;align-items:center;background:#FFEDEE;color:#A83A48;border-radius:16px;padding:10px 12px;font-size:14px;margin-top:14px}
+.tip svg{width:17px;height:17px;flex:none;stroke:currentColor}
+.subs{list-style:none;display:grid;gap:8px;font-size:14.5px}
+.subs b{font-weight:600}
+.two{display:grid;gap:24px}
+@media (min-width:520px){.two{grid-template-columns:1fr 1fr}}
+
+/* all-ingredients picker */
+.pk-head{position:sticky;top:0;z-index:2;background:var(--panel-solid);padding:20px 20px 12px;border-bottom:1px solid var(--line)}
+.pk-head h3{font-size:21px;font-weight:700;margin-bottom:12px}
+.pk-search{width:100%;height:48px;padding:0 16px;border-radius:999px;border:1.5px solid var(--line2);background:#fff;font-size:16px}
+.pk-search:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 5px rgba(240,101,122,.14)}
+.pk-body{padding:4px 20px 100px}
+.pk-sec{padding-top:18px}
+.pk-sec h5{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.pk-sec h5 svg{width:15px;height:15px;stroke:currentColor}
+.pk-list{display:grid;grid-template-columns:1fr 1fr;column-gap:16px}
+.row{display:flex;align-items:center;gap:10px;min-height:48px;border-bottom:1px solid var(--line);font-size:15px;text-align:right;width:100%}
+.row .box{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line2);display:grid;place-items:center;flex:none;background:#fff;transition:background .2s,border-color .2s,transform .3s var(--spring)}
+.row .box svg{width:11px;height:11px;stroke:#fff;transform:scale(0);transition:transform .3s var(--spring)}
+.row[aria-pressed="true"] .box{background:var(--accent);border-color:var(--accent);transform:scale(1.08)}
+.row[aria-pressed="true"] .box svg{transform:none}
+.pk-foot{position:sticky;bottom:0;padding:14px 20px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(rgba(255,253,250,0),var(--panel-solid) 35%)}
+.done{width:100%;height:54px;border-radius:999px;font-size:16px}
+
+/* ---------- Mobile bar ---------- */
+.mbar{
+  position:fixed;left:14px;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:40;
+  height:60px;padding:0 9px 0 20px;border-radius:999px;background:var(--text);color:#F3E6DA;
+  display:flex;align-items:center;justify-content:space-between;font-weight:500;font-size:15px;
+  box-shadow:0 4px 0 #000,0 18px 36px -14px rgba(70,30,20,.6);transition:transform .45s var(--spring);
+}
+.mbar.hide{transform:translateY(170%)}
+.mbar b{background:var(--accent);color:#fff;height:42px;padding:0 16px;border-radius:999px;display:flex;align-items:center;gap:6px;font-weight:600;font-size:14.5px;box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+.mbar b svg{width:15px;height:15px;stroke:#fff}
+@media (min-width:980px){.mbar{display:none}}
+
+/* ---------- Toast + sparks ---------- */
+.toast{position:fixed;top:14px;left:50%;transform:translate(-50%,-160%);background:var(--text);color:#fff;padding:11px 20px;border-radius:999px;font-size:15px;font-weight:500;z-index:60;transition:transform .45s var(--spring);max-width:calc(100% - 28px);text-align:center;box-shadow:0 12px 30px -10px rgba(70,30,20,.5)}
+.toast.show{transform:translate(-50%,0)}
+.cf{position:fixed;width:7px;height:7px;border-radius:50%;z-index:70;pointer-events:none;animation:cf .9s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes cf{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.3);opacity:0}}
+
+/* ---------- Footer ---------- */
+footer{max-width:1140px;margin:0 auto;padding:0 18px 120px}
+@media (min-width:980px){footer{padding-bottom:36px}}
+.resp{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:center;font-size:13px;color:var(--muted);padding:8px}
+.resp b{color:var(--text);font-weight:600}
+.resp i{width:3px;height:3px;border-radius:50%;background:#E6C9BC}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+
+</head>
+<body>
+
+<div class="bg" aria-hidden="true">
+  <span class="glow g1"></span><span class="glow g2"></span><span class="glow g3"></span>
+  <span class="dots"></span><span class="grain"></span>
+</div>
+
+<header class="hero">
+  <h1>מה שותים <b>הערב?</b></h1>
+</header>
+
+<main class="wrap">
+  <section class="panel panel-ings" aria-labelledby="t1">
+    <div class="ph">
+      <h2 id="t1">מה יש בבית?</h2>
+      <div class="tools">
+        <button class="clear-all" id="clear" hidden>מחק הכל</button>
+        <button class="spark-btn" id="basics" aria-label="הוספת ערכת בסיס: קרח, סוכר, לימון, סודה ועוד" title="ערכת בסיס">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="field-wrap">
+      <div class="field" id="field">
+        <svg class="s" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <span id="tokens" style="display:contents"></span>
+        <input id="q" type="text" autocomplete="off" placeholder="הקלידו מרכיב..." role="combobox" aria-expanded="false" aria-controls="dd" aria-autocomplete="list" aria-label="הוספת מרכיב">
+      </div>
+      <ul class="dd" id="dd" role="listbox" hidden></ul>
+    </div>
+
+    <button class="browse press b-ghost" id="browse">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+      <span>כל המרכיבים</span> <b id="browseN"></b>
+    </button>
+  </section>
+
+  <section class="panel" id="results" aria-label="קוקטיילים">
+    <div class="res-top">
+      <div class="tabs" role="tablist" aria-label="תוצאות">
+        <span class="tab-ind" id="tabInd" aria-hidden="true"></span>
+        <button class="tab" role="tab" data-tab="now" aria-selected="true" aria-controls="grid">עכשיו <span class="n" id="nNow">0</span></button>
+        <button class="tab" role="tab" data-tab="almost" aria-selected="false" aria-controls="grid">כמעט <span class="n" id="nAlmost">0</span></button>
+        <button class="tab" role="tab" data-tab="all" aria-selected="false" aria-controls="grid">הכל <span class="n" id="nAll">0</span></button>
+        <button class="tab fav-tab" role="tab" data-tab="fav" aria-selected="false" aria-controls="grid" aria-label="אהובים"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.3A4.2 4.2 0 0 1 12 7.6a4.2 4.2 0 0 1 7.5 2.6c0 5.7-7.5 10.3-7.5 10.3z"/></svg><span class="n" id="nFav">0</span></button>
+      </div>
+    </div>
+    <div class="filters" role="group" aria-label="סינון אלכוהול">
+      <button class="fpill press b-ghost" data-f="na" aria-pressed="false">בלי אלכוהול</button>
+      <button class="fpill press b-ghost" data-f="alc" aria-pressed="false">עם אלכוהול</button>
+      <button class="dice press b-primary" id="surprise" aria-label="תפתיעו אותי" title="תפתיעו אותי">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="8.5" cy="8.5" r="1.1" fill="#fff"/><circle cx="15.5" cy="15.5" r="1.1" fill="#fff"/><circle cx="12" cy="12" r="1.1" fill="#fff"/><circle cx="15.5" cy="8.5" r="1.1" fill="#fff"/><circle cx="8.5" cy="15.5" r="1.1" fill="#fff"/></svg>
+      </button>
+    </div>
+    <div id="grid" class="grid" role="tabpanel" aria-live="polite"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="resp" role="note"><b>שותים באחריות</b><i></i><span>אסור להגיש אלכוהול מתחת לגיל 18</span><i></i><span>שתיתם? לא נוהגים</span></div>
+</footer>
+
+<button class="mbar hide" id="mbar"><span id="mbarText">הבר ריק</span><b><span id="mbarPill">0 קוקטיילים</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></b></button>
+
+<div class="modal" id="modal" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="mTitle" id="sheet"></div>
+</div>
+
+<div class="modal" id="picker" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pkTitle" id="pkSheet">
+    <button class="close" data-close aria-label="סגירה"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="pk-head">
+      <h3 id="pkTitle">כל המרכיבים</h3>
+      <input class="pk-search" id="pkSearch" type="search" placeholder="חיפוש" autocomplete="off" aria-label="חיפוש ברשימה">
+    </div>
+    <div class="pk-body" id="pkBody"></div>
+    <div class="pk-foot"><button class="done press b-primary" data-close id="pkDone">סיום</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ================== DATA ================== */
+const CATS = [
+  {id:'alc',   name:'אלכוהול',              color:'#FF4F8B'},
+  {id:'soft',  name:'מיצים ומשקאות קלים',    color:'#FF9F1C'},
+  {id:'sweet', name:'סירופים ומתוקים',       color:'#7B5CFF'},
+  {id:'fruit', name:'פירות וצמחים',          color:'#2EC4B6'},
+  {id:'extra', name:'קרח ותוספות',           color:'#3A86FF'}
+];
+
+// [id, name, category, aliases]
+const INGS = [
+  ['vodka','וודקה','alc',['ודקה','vodka']],
+  ['white_rum','רום לבן','alc',['רום','בקרדי','rum']],
+  ['dark_rum','רום כהה','alc',['רום שחור','רום זהוב']],
+  ['gin','ג׳ין','alc',['גין','gin','ג\'ין']],
+  ['tequila','טקילה','alc',['tequila']],
+  ['whiskey','ויסקי / בורבון','alc',['וויסקי','בורבון','ויסקי','whiskey','whisky','ג\'ק']],
+  ['triple_sec','טריפל סק / קואנטרו','alc',['קואנטרו','קוואנטרו','טריפל סק','ליקר תפוזים','cointreau']],
+  ['campari','קמפרי','alc',['קמפארי','campari']],
+  ['aperol','אפרול','alc',['aperol']],
+  ['sweet_vermouth','ורמוט אדום','alc',['ורמוט מתוק','מרטיני רוסו','ורמוט']],
+  ['dry_vermouth','ורמוט יבש','alc',['מרטיני אקסטרה דריי','ורמוט לבן']],
+  ['prosecco','פרוסקו / יין מבעבע','alc',['פרוסקו','שמפניה','קאווה','יין מבעבע','שמפנייה']],
+  ['red_wine','יין אדום','alc',['יין']],
+  ['coffee_liqueur','ליקר קפה','alc',['קלואה','kahlua']],
+  ['peach_schnapps','ליקר אפרסק','alc',['שנאפס אפרסק','אפרסק']],
+
+  ['orange_juice','מיץ תפוזים','soft',['תפוזים','מיץ תפוז']],
+  ['cranberry_juice','מיץ חמוציות','soft',['חמוציות','קרנבריז']],
+  ['pineapple_juice','מיץ אננס','soft',['אננס']],
+  ['grapefruit_juice','מיץ אשכוליות','soft',['אשכוליות','אשכולית']],
+  ['tomato_juice','מיץ עגבניות','soft',['עגבניות']],
+  ['soda','סודה','soft',['מים מוגזים','סודה']],
+  ['water','מים קרים','soft',['מים']],
+  ['cola','קולה','soft',['קוקה קולה','קוקה','פפסי']],
+  ['sprite','ספרייט / סבן אפ','soft',['ספרייט','7אפ','סבן אפ','7up','לימון ליים']],
+  ['tonic','טוניק','soft',['מי טוניק','שוופס טוניק']],
+  ['ginger_beer','ג׳ינג׳ר ביר','soft',['ג\'ינג\'ר ביר','ג׳ינג׳ר אייל','ginger beer','ג\'ינג\'ר אייל']],
+  ['espresso','אספרסו','soft',['קפה','קפה שחור']],
+  ['cream','שמנת מתוקה','soft',['שמנת']],
+  ['milk','חלב','soft',['חלב']],
+
+  ['sugar_syrup','סירופ סוכר','sweet',['סירופ פשוט','סימפל סירופ']],
+  ['sugar','סוכר','sweet',['סוכר לבן','סוכר חום']],
+  ['honey','דבש','sweet',['דבש']],
+  ['grenadine','גרנדין','sweet',['סירופ רימונים','גרנדין']],
+  ['coconut_cream','קרם קוקוס','sweet',['חלב קוקוס','קוקוס']],
+  ['angostura','ביטר (אנגוסטורה)','sweet',['ביטר','אנגוסטורה','bitters']],
+
+  ['lime','ליים','fruit',['ליימים','לימון ירוק']],
+  ['lemon','לימון','fruit',['לימונים']],
+  ['orange','תפוז','fruit',['תפוזים']],
+  ['strawberry','תותים','fruit',['תות','תות שדה']],
+  ['mint','נענע','fruit',['מנטה','נענה']],
+  ['basil','בזיליקום','fruit',['ריחן']],
+  ['celery','סלרי','fruit',['סלרי']],
+  ['cherry','דובדבנים מסוכרים','fruit',['דובדבן','מרסקינו','דובדבנים']],
+
+  ['ice','קרח','extra',['קוביות קרח','קרח כתוש']],
+  ['salt','מלח','extra',['מלח גס']],
+  ['pepper','פלפל שחור','extra',['פלפל']],
+  ['tabasco','טבסקו','extra',['רוטב חריף','צ\'ילי']],
+  ['worcestershire','רוטב ווסטרשייר','extra',['ווסטרשייר','וורצסטר']],
+  ['olive','זיתים ירוקים','extra',['זית','זיתים']],
+  ['egg_white','ביצה (חלבון)','extra',['ביצה','חלבון','ביצים']]
+].map(([id,name,cat,aliases])=>({id,name,cat,aliases}));
+const ING = Object.fromEntries(INGS.map(i=>[i.id,i]));
+
+/*
+  Recipe fields:
+  alc: 0 none, 1 light, 2 medium, 3 strong
+  ing: {id, a: amount, t: display name override, opt: true = not required}
+  subs: {id, alt:[ingredient ids], tip}
+*/
+const RECIPES = [
+{ id:'mojito', name:'מוחיטו', en:'Mojito', alc:2, color:'#7ED957', glass:'highball',
+  serve:'כוס גבוהה מלאה קרח, עם קשית', garnish:'ענף נענע ופלח ליים', diff:1, time:4,
+  taste:['רענן','חמצמץ','מתוק'], tasteNote:'קריר, ירוק וחמוץ-מתוק. קיץ בכוס.',
+  alcNote:'בינוני: 50 מ״ל רום בכוס ארוכה ומדוללת בסודה.',
+  ing:[{id:'white_rum',a:'50 מ״ל'},{id:'lime',a:'חצי',t:'ליים, חתוך לפלחים'},{id:'mint',a:'8–10 עלים',t:'נענע'},{id:'sugar_syrup',a:'20 מ״ל'},{id:'soda',a:'60 מ״ל'},{id:'ice',a:'כוס מלאה',t:'קרח (כתוש, אם יש)'}],
+  steps:['שמים בכוס את פלחי הליים, את עלי הנענע ואת סירופ הסוכר.','מועכים בעדינות עם כף או מועך. המטרה לשחרר ריח, לא לעשות סלט.','ממלאים את הכוס בקרח ומוזגים את הרום.','משלימים בסודה ומערבבים מלמטה למעלה.'],
+  subs:[{id:'sugar_syrup',alt:['sugar','honey'],tip:'אין סירופ? 2 כפיות סוכר או כפית דבש, מעורבבים עם טיפת מים.'},{id:'lime',alt:['lemon'],tip:'לימון במקום ליים: עובד מצוין, קצת פחות ארומטי.'},{id:'white_rum',alt:['vodka'],tip:'וודקה במקום רום נותנת מוחיטו "נקי" יותר.'}]},
+
+{ id:'margarita', name:'מרגריטה', en:'Margarita', alc:3, color:'#D8E86B', glass:'coupe', shake:true,
+  serve:'כוס מרגריטה או כוס קופה. אפשר גם כוס נמוכה עם קרח', garnish:'פלח ליים ושוליים מלוחים', diff:2, time:5,
+  taste:['חמצמץ','מלוח','רענן'], tasteNote:'חמוצה, חדה ומלוחה בקצוות. לא מנסה להיות מתוקה.',
+  alcNote:'חזק: 75 מ״ל אלכוהול בכוס קטנה. קטנה בגודל, לא בעוצמה.',
+  ing:[{id:'tequila',a:'50 מ״ל'},{id:'triple_sec',a:'25 מ״ל'},{id:'lime',a:'25 מ״ל',t:'מיץ ליים טרי (בערך ליים אחד)'},{id:'ice',a:'חופן'},{id:'salt',a:'קצת',t:'מלח לשפת הכוס',opt:true}],
+  steps:['רוצים שוליים מלוחים? מעבירים פלח ליים על שפת הכוס וטובלים אותה בצלחת עם מלח.','בשייקר שמים טקילה, טריפל סק, מיץ ליים והרבה קרח.','מנערים חזק 10–15 שניות, עד שהשייקר קר מבחוץ.','מסננים לכוס ומקשטים בפלח ליים.'],
+  subs:[{id:'triple_sec',alt:['orange_juice'],tip:'אין טריפל סק? 20 מ״ל מיץ תפוזים ועוד 10 מ״ל סירופ סוכר. יוצא קליל יותר.'},{id:'lime',alt:['lemon'],tip:'לימון במקום ליים: טעם קצת שונה, עדיין שמח.'}]},
+
+{ id:'cosmo', name:'קוסמופוליטן', en:'Cosmopolitan', alc:3, color:'#E84A7A', glass:'martini', shake:true,
+  serve:'כוס מרטיני מקוררת, בלי קרח בכוס', garnish:'רצועת קליפת תפוז', diff:2, time:4,
+  taste:['פירותי','חמצמץ'], tasteNote:'ורוד, אלגנטי ופירותי, עם חמיצות של חמוציות וליים.',
+  alcNote:'חזק-בינוני: 55 מ״ל אלכוהול, בלי מילוי.',
+  ing:[{id:'vodka',a:'40 מ״ל'},{id:'triple_sec',a:'15 מ״ל'},{id:'cranberry_juice',a:'30 מ״ל'},{id:'lime',a:'15 מ״ל',t:'מיץ ליים טרי'},{id:'ice',a:'חופן'}],
+  steps:['מכניסים כוס למקפיא לכמה דקות, או ממלאים אותה בקרח ומים כדי שתתקרר.','בשייקר שמים את כל הנוזלים עם הרבה קרח.','מנערים חזק כ-15 שניות.','שופכים את הקרח מהכוס, מסננים לתוכה את המשקה ומקשטים.'],
+  subs:[{id:'triple_sec',alt:['orange_juice'],tip:'מיץ תפוזים במקום טריפל סק: פחות חזק, יותר מיצי.'},{id:'lime',alt:['lemon'],tip:'לימון יעשה את העבודה.'}]},
+
+{ id:'mule', name:'מוסקו מיול', en:'Moscow Mule', alc:2, color:'#F2C14E', glass:'mug',
+  serve:'ספל נחושת אם יש, ואם לא, כל כוס גבוהה', garnish:'פלח ליים וענף נענע', diff:1, time:2,
+  taste:['חריף','רענן','מבעבע'], tasteNote:'עקיצה של ג׳ינג׳ר, בעבוע וליים. מעורר.',
+  alcNote:'בינוני: 50 מ״ל וודקה בכוס ארוכה.',
+  ing:[{id:'vodka',a:'50 מ״ל'},{id:'ginger_beer',a:'120 מ״ל'},{id:'lime',a:'15 מ״ל',t:'מיץ ליים טרי'},{id:'ice',a:'כוס מלאה'}],
+  steps:['ממלאים את הספל או הכוס בקרח.','מוזגים וודקה ומיץ ליים.','משלימים בג׳ינג׳ר ביר ומערבבים פעם אחת בעדינות.'],
+  subs:[{id:'ginger_beer',alt:['sprite'],tip:'ספרייט עם קצת ג׳ינג׳ר טרי מגורר: פחות עוקץ, עדיין כיף.'},{id:'lime',alt:['lemon'],tip:'לימון במקום ליים.'},{id:'vodka',alt:['dark_rum'],tip:'רום כהה במקום וודקה, וכבר יש לכם "דארק אנד סטורמי".'}]},
+
+{ id:'daiquiri', name:'דאקירי', en:'Daiquiri', alc:3, color:'#E6F0A8', glass:'coupe', shake:true,
+  serve:'כוס קופה מקוררת', garnish:'גלגל ליים', diff:2, time:4,
+  taste:['חמצמץ','מתוק'], tasteNote:'שלושה מרכיבים ואיזון מושלם בין חמוץ למתוק. הקלאסיקה שברמנים אוהבים.',
+  alcNote:'חזק: 50 מ״ל רום כמעט בלי דילול.',
+  ing:[{id:'white_rum',a:'50 מ״ל'},{id:'lime',a:'25 מ״ל',t:'מיץ ליים טרי'},{id:'sugar_syrup',a:'15 מ״ל'},{id:'ice',a:'חופן'}],
+  steps:['שמים בשייקר רום, מיץ ליים וסירופ סוכר.','מוסיפים הרבה קרח ומנערים חזק 15 שניות.','מסננים לכוס מקוררת ומקשטים בגלגל ליים.'],
+  subs:[{id:'sugar_syrup',alt:['sugar','honey'],tip:'2 כפיות סוכר מומסות במעט מים, או דבש מדולל.'},{id:'lime',alt:['lemon'],tip:'לימון במקום ליים.'}]},
+
+{ id:'pinacolada', name:'פינה קולדה', en:'Piña Colada', alc:2, color:'#FFE8A3', glass:'hurricane',
+  serve:'כוס גבוהה ומעוקלת, עם קשית', garnish:'משולש אננס ודובדבן', diff:1, time:5,
+  taste:['מתוק','קרמי','פירותי'], tasteNote:'קרמי, טרופי ומתוק. קינוח שמתחפש למשקה.',
+  alcNote:'בינוני: 50 מ״ל רום שמתחבא היטב מאחורי הקוקוס. שימו לב.',
+  ing:[{id:'white_rum',a:'50 מ״ל'},{id:'coconut_cream',a:'50 מ״ל'},{id:'pineapple_juice',a:'100 מ״ל'},{id:'ice',a:'כוס'}],
+  steps:['שמים בבלנדר רום, קרם קוקוס, מיץ אננס וכוס קרח.','טוחנים עד שמקבלים מרקם חלק, כמו ברד.','מוזגים לכוס ומקשטים.'],
+  subs:[{id:'white_rum',alt:['dark_rum'],tip:'רום כהה נותן טעם עמוק יותר.'},{id:'coconut_cream',alt:['cream'],tip:'שמנת מתוקה עם טיפת סוכר: פחות טרופי, עדיין קרמי.'}]},
+
+{ id:'aperolspritz', name:'אפרול שפריץ', en:'Aperol Spritz', alc:1, color:'#FF7B2E', glass:'wine',
+  serve:'כוס יין גדולה מלאה קרח', garnish:'פרוסת תפוז', diff:1, time:2,
+  taste:['מריר','מתוק','מבעבע'], tasteNote:'כתום, מבעבע ומריר-מתוק. צבע של שקיעה.',
+  alcNote:'קליל: אפרול הוא ליקר חלש יחסית, והיין המבעבע מדלל. מהקלילים ברשימה.',
+  ing:[{id:'aperol',a:'60 מ״ל'},{id:'prosecco',a:'90 מ״ל'},{id:'soda',a:'30 מ״ל'},{id:'ice',a:'כוס מלאה'},{id:'orange',a:'פרוסה',t:'תפוז לקישוט',opt:true}],
+  steps:['ממלאים כוס יין בקרח.','מוזגים קודם את הפרוסקו ואחריו את האפרול, ככה הוא לא שוקע לתחתית.','מוסיפים סודה, מערבבים פעם אחת ומקשטים בפרוסת תפוז.'],
+  subs:[{id:'aperol',alt:['campari'],tip:'קמפרי במקום אפרול: מריר וחזק יותר.'},{id:'prosecco',alt:['sprite'],tip:'ספרייט במקום פרוסקו: מתוק יותר ולא מסורתי, אבל עובד.'}]},
+
+{ id:'negroni', name:'נגרוני', en:'Negroni', alc:3, color:'#C8102E', glass:'rocks',
+  serve:'כוס נמוכה עם קרח (קוביה אחת גדולה, אם יש)', garnish:'רצועת קליפת תפוז', diff:1, time:3,
+  taste:['מריר','מתוק','עשבוני'], tasteNote:'מריר, עשיר ובוגר. לא לכולם, אבל מי שמתאהב, מתאהב.',
+  alcNote:'חזק: 90 מ״ל, כולם משקאות חריפים וליקרים, בלי מילוי.',
+  ing:[{id:'gin',a:'30 מ״ל'},{id:'campari',a:'30 מ״ל'},{id:'sweet_vermouth',a:'30 מ״ל'},{id:'ice',a:'חופן'},{id:'orange',a:'רצועה',t:'קליפת תפוז',opt:true}],
+  steps:['שמים בכוס קרח.','מוזגים את שלושת המרכיבים בכמות שווה.','מערבבים בכף כ-20 שניות.','סוחטים מעל הכוס רצועת קליפת תפוז, כדי שהשמן יתפזר, ומכניסים אותה פנימה.'],
+  subs:[{id:'gin',alt:['vodka'],tip:'וודקה במקום ג׳ין: פחות ארומטי, יותר חלק.'},{id:'campari',alt:['aperol'],tip:'אפרול במקום קמפרי: מתוק וקליל יותר.'}]},
+
+{ id:'gt', name:'ג׳ין טוניק', en:'Gin & Tonic', alc:2, color:'#CFEFEA', glass:'wine',
+  serve:'כוס יין גדולה או כוס גבוהה, הרבה קרח', garnish:'פלח ליים', diff:1, time:2,
+  taste:['מריר','רענן','מבעבע'], tasteNote:'יבש, מריר-רענן ומבעבע. פשוט וקלאסי.',
+  alcNote:'בינוני: 50 מ״ל ג׳ין מדולל בטוניק.',
+  ing:[{id:'gin',a:'50 מ״ל'},{id:'tonic',a:'150 מ״ל'},{id:'ice',a:'כוס מלאה'},{id:'lime',a:'פלח',t:'ליים'}],
+  steps:['ממלאים כוס בקרח. ככל שיש יותר קרח, הוא נמס לאט יותר.','מוזגים ג׳ין.','משלימים בטוניק לאט, לאורך כף, כדי לשמור על הבועות.','סוחטים פלח ליים ומכניסים לכוס.'],
+  subs:[{id:'tonic',alt:['soda'],tip:'סודה במקום טוניק = ג׳ין סודה. יבש ופחות מריר.'},{id:'lime',alt:['lemon'],tip:'פלח לימון במקום ליים.'}]},
+
+{ id:'cubalibre', name:'קובה ליברה', en:'Cuba Libre', alc:2, color:'#5A2E1A', glass:'highball',
+  serve:'כוס גבוהה עם קרח', garnish:'פלח ליים', diff:1, time:2,
+  taste:['מתוק','רענן'], tasteNote:'רום וקולה, עם ליים שמצדיק את השם המפואר.',
+  alcNote:'בינוני: 50 מ״ל רום בכוס ארוכה.',
+  ing:[{id:'white_rum',a:'50 מ״ל'},{id:'cola',a:'120 מ״ל'},{id:'lime',a:'חצי',t:'ליים'},{id:'ice',a:'כוס מלאה'}],
+  steps:['סוחטים את חצי הליים לתוך הכוס וזורקים אותו פנימה.','ממלאים קרח ומוזגים רום.','משלימים בקולה ומערבבים פעם אחת.'],
+  subs:[{id:'white_rum',alt:['dark_rum'],tip:'רום כהה נותן טעם עשיר יותר.'},{id:'lime',alt:['lemon'],tip:'לימון במקום ליים.'}]},
+
+{ id:'oldfashioned', name:'אולד פשנד', en:'Old Fashioned', alc:3, color:'#B5651D', glass:'rocks',
+  serve:'כוס נמוכה עם קוביית קרח גדולה', garnish:'רצועת קליפת תפוז', diff:2, time:4,
+  taste:['מריר','מתוק','יבש'], tasteNote:'ויסקי במיטבו: חם, עגול ומעט מתוק.',
+  alcNote:'חזק: 60 מ״ל ויסקי כמעט נקי. לשתות לאט.',
+  ing:[{id:'whiskey',a:'60 מ״ל'},{id:'sugar',a:'כפית',t:'סוכר (או קובייה)'},{id:'angostura',a:'2–3 טיפות'},{id:'ice',a:'קובייה גדולה או כמה קטנות'},{id:'orange',a:'רצועה',t:'קליפת תפוז',opt:true}],
+  steps:['שמים בכוס את הסוכר, הביטר ומעט מים, בערך כפית.','מערבבים עד שהסוכר כמעט נמס.','מוסיפים קרח ומוזגים את הוויסקי.','מערבבים כ-30 שניות, סוחטים קליפת תפוז מעל ומכניסים לכוס.'],
+  subs:[{id:'sugar',alt:['sugar_syrup','honey'],tip:'7 מ״ל סירופ סוכר, או חצי כפית דבש.'},{id:'whiskey',alt:['dark_rum'],tip:'רום כהה במקום ויסקי: "רום אולד פשנד", מתוק יותר.'}]},
+
+{ id:'whiskeysour', name:'ויסקי סאוור', en:'Whiskey Sour', alc:2, color:'#F4C430', glass:'rocks', shake:true,
+  serve:'כוס נמוכה עם קרח', garnish:'דובדבן ופרוסת תפוז', diff:2, time:5,
+  taste:['חמצמץ','מתוק'], tasteNote:'חמוץ-מתוק, עם ויסקי חם ברקע. עם חלבון יוצא קצף משיי.',
+  alcNote:'בינוני-חזק: 50 מ״ל ויסקי.',
+  ing:[{id:'whiskey',a:'50 מ״ל'},{id:'lemon',a:'25 מ״ל',t:'מיץ לימון טרי'},{id:'sugar_syrup',a:'20 מ״ל'},{id:'ice',a:'חופן'},{id:'egg_white',a:'חצי',t:'חלבון ביצה (לקצף)',opt:true}],
+  steps:['שמים בשייקר ויסקי, מיץ לימון וסירופ. אם יש חלבון, מוסיפים גם אותו.','עם חלבון: מנערים קודם בלי קרח 10 שניות, כדי שייצא קצף.','מוסיפים קרח ומנערים חזק עוד 15 שניות.','מסננים לכוס עם קרח ומקשטים.'],
+  subs:[{id:'lemon',alt:['lime'],tip:'ליים במקום לימון.'},{id:'sugar_syrup',alt:['sugar','honey'],tip:'דבש מדולל נותן גרסה עגולה וחמימה.'},{id:'whiskey',alt:['dark_rum'],tip:'רום כהה = "רום סאוור".'}]},
+
+{ id:'sunrise', name:'טקילה סאנרייז', en:'Tequila Sunrise', alc:2, color:'#FF8C1A', glass:'highball',
+  serve:'כוס גבוהה עם קרח', garnish:'פרוסת תפוז ודובדבן', diff:1, time:3,
+  taste:['מתוק','פירותי'], tasteNote:'מתוק, מיצי ויפה בטירוף. שקיעה בכוס.',
+  alcNote:'בינוני: 50 מ״ל טקילה במיץ תפוזים.',
+  ing:[{id:'tequila',a:'50 מ״ל'},{id:'orange_juice',a:'120 מ״ל'},{id:'grenadine',a:'15 מ״ל'},{id:'ice',a:'כוס מלאה'}],
+  steps:['ממלאים כוס בקרח, מוזגים טקילה ומיץ תפוזים ומערבבים.','מוזגים את הגרנדין לאט לאורך דופן הכוס. הוא שוקע לתחתית.','לא מערבבים! נהנים מהשקיעה.'],
+  subs:[{id:'grenadine',alt:['cranberry_juice'],tip:'מעט מיץ חמוציות: שוקע פחות, אבל עדיין צבעוני.'},{id:'tequila',alt:['vodka'],tip:'וודקה במקום טקילה.'}]},
+
+{ id:'screwdriver', name:'סקרודרייבר', en:'Screwdriver', alc:2, color:'#FFA62B', glass:'highball',
+  serve:'כוס גבוהה עם קרח', garnish:'פרוסת תפוז', diff:1, time:1,
+  taste:['מתוק','פירותי'], tasteNote:'וודקה ותפוזים, וזהו. הכי פשוט שיש.',
+  alcNote:'בינוני: 50 מ״ל וודקה, הטעם כמעט לא מורגש. בזהירות.',
+  ing:[{id:'vodka',a:'50 מ״ל'},{id:'orange_juice',a:'150 מ״ל'},{id:'ice',a:'כוס מלאה'}],
+  steps:['ממלאים כוס בקרח.','מוזגים וודקה ומשלימים במיץ תפוזים.','מערבבים. סיימתם, באמת.'],
+  subs:[{id:'orange_juice',alt:['pineapple_juice'],tip:'מיץ אננס במקום תפוזים: טרופי יותר.'}]},
+
+{ id:'paloma', name:'פלומה', en:'Paloma', alc:2, color:'#F7A399', glass:'highball',
+  serve:'כוס גבוהה עם קרח, אפשר עם שוליים מלוחים', garnish:'פלח אשכולית או ליים', diff:1, time:3,
+  taste:['חמצמץ','מריר','מבעבע'], tasteNote:'המשקה האהוב במקסיקו: אשכולית מרירה, ליים ובועות.',
+  alcNote:'בינוני: 50 מ״ל טקילה בכוס ארוכה.',
+  ing:[{id:'tequila',a:'50 מ״ל'},{id:'grapefruit_juice',a:'100 מ״ל'},{id:'lime',a:'15 מ״ל',t:'מיץ ליים'},{id:'soda',a:'50 מ״ל'},{id:'ice',a:'כוס מלאה'},{id:'salt',a:'קורט',opt:true}],
+  steps:['אופציונלי: שוליים מלוחים כמו במרגריטה.','ממלאים כוס בקרח, מוזגים טקילה, מיץ אשכוליות וליים, ומוסיפים קורט מלח.','משלימים בסודה ומערבבים בעדינות.'],
+  subs:[{id:'grapefruit_juice',alt:['sprite'],tip:'ספרייט ועוד קצת ליים: לא אשכולית, אבל מבעבע ושמח.'},{id:'lime',alt:['lemon'],tip:'לימון במקום ליים.'}]},
+
+{ id:'bloodymary', name:'בלאדי מרי', en:'Bloody Mary', alc:2, color:'#C1272D', glass:'highball',
+  serve:'כוס גבוהה עם קרח', garnish:'מקל סלרי ופלח לימון', diff:2, time:5,
+  taste:['מלוח','חריף'], tasteNote:'מלוח, פיקנטי ועגבנייתי. כמעט ארוחה.',
+  alcNote:'בינוני: 45 מ״ל וודקה במיץ עגבניות.',
+  ing:[{id:'vodka',a:'45 מ״ל'},{id:'tomato_juice',a:'120 מ״ל'},{id:'lemon',a:'15 מ״ל',t:'מיץ לימון'},{id:'worcestershire',a:'3 טיפות'},{id:'tabasco',a:'2 טיפות'},{id:'salt',a:'קורט'},{id:'pepper',a:'קורט'},{id:'ice',a:'כוס מלאה'},{id:'celery',a:'מקל',t:'סלרי לקישוט',opt:true}],
+  steps:['שמים בכוס קרח וכל הנוזלים.','מוסיפים מלח, פלפל, טבסקו ווסטרשייר.','מערבבים טוב, טועמים ומתקנים: עוד חריף? עוד לימון?','נועצים מקל סלרי.'],
+  subs:[{id:'lemon',alt:['lime'],tip:'ליים במקום לימון.'},{id:'tabasco',alt:['pepper'],tip:'בלי טבסקו? עוד פלפל שחור.'},{id:'worcestershire',alt:[],tip:'אין ווסטרשייר? כמה טיפות רוטב סויה.'}]},
+
+{ id:'espressomartini', name:'אספרסו מרטיני', en:'Espresso Martini', alc:3, color:'#3B2416', glass:'martini', shake:true,
+  serve:'כוס מרטיני מקוררת', garnish:'3 פולי קפה, אם יש', diff:2, time:5,
+  taste:['מריר','מתוק','קרמי'], tasteNote:'קפה חזק, מתיקות עדינה וקצף קטיפתי מלמעלה.',
+  alcNote:'חזק: 75 מ״ל אלכוהול, וגם קפאין. שילוב ערני, לא בשביל לישון.',
+  ing:[{id:'vodka',a:'50 מ״ל'},{id:'coffee_liqueur',a:'25 מ״ל'},{id:'espresso',a:'30 מ״ל',t:'אספרסו טרי, מעט מקורר'},{id:'sugar_syrup',a:'10 מ״ל'},{id:'ice',a:'חופן גדול'}],
+  steps:['מכינים אספרסו ונותנים לו להתקרר דקה.','בשייקר שמים הכל עם הרבה קרח.','מנערים ממש חזק 20 שניות. זה מה שיוצר את הקצף.','מסננים לכוס ומניחים פולי קפה על הקצף.'],
+  subs:[{id:'coffee_liqueur',alt:['sugar_syrup'],tip:'בלי ליקר קפה: עוד 15 מ״ל סירופ סוכר. פחות עומק, עדיין טעים.'},{id:'sugar_syrup',alt:['sugar'],tip:'כפית סוכר שמומסת באספרסו החם.'}]},
+
+{ id:'whiterussian', name:'וייט רשן', en:'White Russian', alc:2, color:'#D9C3A5', glass:'rocks',
+  serve:'כוס נמוכה עם קרח', garnish:'בלי. הוא מושלם כמו שהוא', diff:1, time:2,
+  taste:['קרמי','מתוק'], tasteNote:'קפה קר עם שמנת, רק שהוא לא בדיוק קפה קר.',
+  alcNote:'בינוני: 75 מ״ל אלכוהול, מרוכך בשמנת.',
+  ing:[{id:'vodka',a:'50 מ״ל'},{id:'coffee_liqueur',a:'25 מ״ל'},{id:'cream',a:'30 מ״ל'},{id:'ice',a:'חופן'}],
+  steps:['ממלאים כוס נמוכה בקרח.','מוזגים וודקה וליקר קפה.','שופכים את השמנת לאט מעל, ונהנים מהשכבות. אפשר לערבב לפני ששותים.'],
+  subs:[{id:'cream',alt:['milk'],tip:'חלב במקום שמנת: גרסה קלילה יותר.'}]},
+
+{ id:'tomcollins', name:'טום קולינס', en:'Tom Collins', alc:2, color:'#F5F3C6', glass:'highball',
+  serve:'כוס גבוהה עם קרח', garnish:'פרוסת לימון ודובדבן', diff:1, time:3,
+  taste:['חמצמץ','רענן','מבעבע'], tasteNote:'לימונדה מבעבעת לגדולים.',
+  alcNote:'בינוני: 50 מ״ל ג׳ין בכוס ארוכה ומדוללת.',
+  ing:[{id:'gin',a:'50 מ״ל'},{id:'lemon',a:'25 מ״ל',t:'מיץ לימון טרי'},{id:'sugar_syrup',a:'20 מ״ל'},{id:'soda',a:'60 מ״ל'},{id:'ice',a:'כוס מלאה'}],
+  steps:['ממלאים כוס גבוהה בקרח.','מוזגים ג׳ין, מיץ לימון וסירופ ומערבבים.','משלימים בסודה ומקשטים.'],
+  subs:[{id:'lemon',alt:['lime'],tip:'ליים במקום לימון.'},{id:'sugar_syrup',alt:['sugar','honey'],tip:'סוכר או דבש מומסים במעט מים.'},{id:'gin',alt:['vodka'],tip:'וודקה = "ג׳ון קולינס" (כן, יש לו אח).'}]},
+
+{ id:'sexonthebeach', name:'סקס און דה ביץ׳', en:'Sex on the Beach', alc:2, color:'#FF6F59', glass:'highball', shake:true,
+  serve:'כוס גבוהה עם קרח', garnish:'פרוסת תפוז', diff:1, time:3,
+  taste:['מתוק','פירותי'], tasteNote:'פירותי, מתוק וצבעוני. של מסיבות.',
+  alcNote:'בינוני: 60 מ״ל אלכוהול, מוסתר היטב במיצים.',
+  ing:[{id:'vodka',a:'40 מ״ל'},{id:'peach_schnapps',a:'20 מ״ל'},{id:'orange_juice',a:'40 מ״ל'},{id:'cranberry_juice',a:'40 מ״ל'},{id:'ice',a:'כוס מלאה'}],
+  steps:['שמים הכל בשייקר עם קרח ומנערים 10 שניות.','מסננים לכוס עם קרח טרי.','אין שייקר? פשוט מערבבים בכוס.'],
+  subs:[{id:'peach_schnapps',alt:['grenadine'],tip:'כפית גרנדין במקום ליקר אפרסק: טעם אחר, אבל צבעוני ומתוק.'}]},
+
+{ id:'darkstormy', name:'דארק אנד סטורמי', en:'Dark ’n’ Stormy', alc:2, color:'#8B4A1F', glass:'highball',
+  serve:'כוס גבוהה עם קרח', garnish:'פלח ליים', diff:1, time:2,
+  taste:['חריף','מתוק','מבעבע'], tasteNote:'רום כהה שמרחף מעל ג׳ינג׳ר חריף. סערה בכוס.',
+  alcNote:'בינוני: 60 מ״ל רום.',
+  ing:[{id:'dark_rum',a:'60 מ״ל'},{id:'ginger_beer',a:'100 מ״ל'},{id:'lime',a:'10 מ״ל',t:'מיץ ליים'},{id:'ice',a:'כוס מלאה'}],
+  steps:['ממלאים כוס בקרח, מוזגים ג׳ינג׳ר ביר ומיץ ליים.','מוזגים את הרום לאט מעל, לאורך כף, כדי שיצוף כמו ענן סערה.','מקשטים ומגישים.'],
+  subs:[{id:'ginger_beer',alt:['sprite'],tip:'ספרייט במקום ג׳ינג׳ר ביר: פחות חריף.'},{id:'lime',alt:['lemon'],tip:'לימון במקום ליים.'}]},
+
+{ id:'martini', name:'מרטיני קלאסי', en:'Dry Martini', alc:3, color:'#E3EEF0', glass:'martini',
+  serve:'כוס מרטיני קפואה', garnish:'זית ירוק על קיסם', diff:2, time:4,
+  taste:['יבש','עשבוני'], tasteNote:'יבש, צלול וחד. הכי "ג׳יימס בונד" שיש.',
+  alcNote:'חזק מאוד: 70 מ״ל אלכוהול בלי שום מילוי. לגימות קטנות.',
+  ing:[{id:'gin',a:'60 מ״ל'},{id:'dry_vermouth',a:'10 מ״ל'},{id:'ice',a:'חופן (לערבוב)'},{id:'olive',a:'1–3',t:'זיתים ירוקים',opt:true}],
+  steps:['שמים כוס מרטיני במקפיא.','בכוס ערבוב גדולה עם הרבה קרח מוזגים ג׳ין וורמוט.','מערבבים בכף 30 שניות. לא מנערים! (סליחה, בונד).','מסננים לכוס הקפואה ומוסיפים זית.'],
+  subs:[{id:'gin',alt:['vodka'],tip:'וודקה במקום ג׳ין = וודקה מרטיני.'}]},
+
+{ id:'sangria', name:'סנגריה', en:'Sangria', alc:1, color:'#7B1E3A', glass:'wine', batch:true,
+  serve:'קנקן גדול וכוסות יין. מספיק ל-4–6 אנשים', garnish:'הפירות שבקנקן', diff:1, time:10, timeNote:'ועוד שעה במקרר',
+  taste:['פירותי','מתוק'], tasteNote:'יין אדום פירותי, קר ומתקתק. של ארוחות ארוכות.',
+  alcNote:'קליל-בינוני לכוס, כי היין מדולל. אבל קל מאוד לשתות הרבה בלי לשים לב.',
+  ing:[{id:'red_wine',a:'בקבוק (750 מ״ל)'},{id:'orange_juice',a:'150 מ״ל'},{id:'orange',a:'1',t:'תפוז פרוס'},{id:'lemon',a:'1',t:'לימון פרוס'},{id:'sugar',a:'2 כפות'},{id:'soda',a:'200 מ״ל'},{id:'ice',a:'הרבה'}],
+  steps:['בקנקן שמים את פרוסות התפוז והלימון ואת הסוכר.','מוסיפים יין ומיץ תפוזים ומערבבים עד שהסוכר נמס.','מכניסים למקרר לפחות לשעה. אפשר גם ללילה שלם, ויהיה עוד יותר טעים.','רגע לפני ההגשה מוסיפים סודה וקרח.'],
+  subs:[{id:'sugar',alt:['honey','sugar_syrup'],tip:'דבש או סירופ במקום סוכר.'},{id:'lemon',alt:['lime'],tip:'ליים במקום לימון.'},{id:'soda',alt:['sprite'],tip:'ספרייט במקום סודה, ואז מוותרים על חצי מהסוכר.'}]},
+
+{ id:'caipiroska', name:'קייפירוסקה תותים', en:'Strawberry Caipiroska', alc:2, color:'#E63946', glass:'rocks',
+  serve:'כוס נמוכה עם קרח כתוש', garnish:'חצי תות על שפת הכוס', diff:1, time:4,
+  taste:['פירותי','חמצמץ','מתוק'], tasteNote:'תותים מעוכים, ליים וסוכר. פירותי וטרי.',
+  alcNote:'בינוני-חזק: 50 מ״ל וודקה בכוס קטנה.',
+  ing:[{id:'vodka',a:'50 מ״ל'},{id:'strawberry',a:'3–4',t:'תותים'},{id:'lime',a:'חצי',t:'ליים, חתוך לקוביות'},{id:'sugar',a:'2 כפיות'},{id:'ice',a:'כוס',t:'קרח (כתוש, אם יש)'}],
+  steps:['שמים בכוס תותים, קוביות ליים וסוכר.','מועכים טוב עד שיוצא הרבה מיץ.','ממלאים קרח, מוזגים וודקה ומערבבים.'],
+  subs:[{id:'sugar',alt:['sugar_syrup','honey'],tip:'15 מ״ל סירופ או דבש.'},{id:'vodka',alt:['white_rum'],tip:'רום לבן במקום וודקה.'},{id:'lime',alt:['lemon'],tip:'לימון במקום ליים.'}]},
+
+{ id:'basilsmash', name:'ג׳ין בזיל סמאש', en:'Gin Basil Smash', alc:2, color:'#7CC46B', glass:'rocks', shake:true,
+  serve:'כוס נמוכה עם קרח', garnish:'עלה בזיליקום', diff:2, time:5,
+  taste:['עשבוני','חמצמץ','רענן'], tasteNote:'ירוק בוהק, ריחני ולימוני. מרגיש כמו גינה.',
+  alcNote:'בינוני: 50 מ״ל ג׳ין.',
+  ing:[{id:'gin',a:'50 מ״ל'},{id:'basil',a:'8–10 עלים'},{id:'lemon',a:'25 מ״ל',t:'מיץ לימון טרי'},{id:'sugar_syrup',a:'20 מ״ל'},{id:'ice',a:'חופן'}],
+  steps:['בשייקר מועכים את עלי הבזיליקום עם הלימון והסירופ.','מוסיפים ג׳ין וקרח ומנערים חזק 15 שניות.','מסננים פעמיים (שייקר ואחר כך מסננת תה) לכוס עם קרח, כדי שלא יהיו חתיכות.'],
+  subs:[{id:'basil',alt:['mint'],tip:'נענע במקום בזיליקום: יוצא קצת כמו מוחיטו עם ג׳ין.'},{id:'lemon',alt:['lime'],tip:'ליים במקום לימון.'},{id:'sugar_syrup',alt:['sugar','honey'],tip:'סוכר או דבש מומסים.'}]},
+
+{ id:'mimosa', name:'מימוסה', en:'Mimosa', alc:1, color:'#FFC145', glass:'flute',
+  serve:'כוס שמפניה צרה, בלי קרח', garnish:'בלי, או רצועת תפוז', diff:1, time:1,
+  taste:['מבעבע','פירותי'], tasteNote:'בראנץ׳ בכוס: תפוזים ובועות.',
+  alcNote:'קליל: חצי מהכוס יין מבעבע.',
+  ing:[{id:'prosecco',a:'90 מ״ל',t:'פרוסקו קר'},{id:'orange_juice',a:'90 מ״ל',t:'מיץ תפוזים קר'}],
+  steps:['מוזגים פרוסקו לכוס, לאט, כדי שלא יגלוש.','משלימים במיץ תפוזים.','לא מערבבים, הבועות עושות את זה בשבילכם.'],
+  subs:[{id:'orange_juice',alt:['grapefruit_juice','pineapple_juice'],tip:'אשכוליות או אננס במקום תפוזים.'}]},
+
+{ id:'americano', name:'אמריקנו', en:'Americano', alc:1, color:'#D7263D', glass:'rocks',
+  serve:'כוס נמוכה עם קרח', garnish:'פרוסת תפוז', diff:1, time:2,
+  taste:['מריר','מבעבע'], tasteNote:'האח הקליל של הנגרוני: מריר ומבעבע, בלי הג׳ין.',
+  alcNote:'קליל-בינוני: 60 מ״ל ליקרים חלשים יחסית, מדוללים בסודה.',
+  ing:[{id:'campari',a:'30 מ״ל'},{id:'sweet_vermouth',a:'30 מ״ל'},{id:'soda',a:'60 מ״ל'},{id:'ice',a:'כוס מלאה'},{id:'orange',a:'פרוסה',opt:true}],
+  steps:['ממלאים כוס בקרח.','מוזגים קמפרי וורמוט.','משלימים בסודה, מערבבים ומקשטים בתפוז.'],
+  subs:[{id:'campari',alt:['aperol'],tip:'אפרול במקום קמפרי: מתוק וקליל יותר.'}]},
+
+/* ---------- בלי אלכוהול ---------- */
+{ id:'nojito', name:'נוחיטו', en:'Virgin Mojito', alc:0, color:'#B8E986', glass:'highball',
+  serve:'כוס גבוהה עם קרח וקשית', garnish:'ענף נענע', diff:1, time:3,
+  taste:['רענן','חמצמץ','מתוק'], tasteNote:'כל הכיף של מוחיטו, בלי הכאב ראש.',
+  alcNote:'אפס אלכוהול. מתאים לכולם, גם לנהג התורן.',
+  ing:[{id:'lime',a:'חצי',t:'ליים, חתוך לפלחים'},{id:'mint',a:'10 עלים',t:'נענע'},{id:'sugar_syrup',a:'20 מ״ל'},{id:'soda',a:'150 מ״ל'},{id:'ice',a:'כוס מלאה'}],
+  steps:['מועכים בכוס ליים, נענע וסירופ.','ממלאים בקרח.','משלימים בסודה ומערבבים מלמטה למעלה.'],
+  subs:[{id:'sugar_syrup',alt:['sugar','honey'],tip:'2 כפיות סוכר או דבש.'},{id:'soda',alt:['sprite'],tip:'ספרייט במקום סודה, ואז מוותרים על הסירופ.'},{id:'lime',alt:['lemon'],tip:'לימון במקום ליים.'}]},
+
+{ id:'shirley', name:'שירלי טמפל', en:'Shirley Temple', alc:0, color:'#FF6B8B', glass:'highball',
+  serve:'כוס גבוהה עם קרח', garnish:'דובדבן מסוכר (או שניים, אף אחד לא סופר)', diff:1, time:1,
+  taste:['מתוק','מבעבע'], tasteNote:'ורוד, מתוק ומבעבע. מסיבת יום הולדת בכוס.',
+  alcNote:'אפס אלכוהול.',
+  ing:[{id:'sprite',a:'200 מ״ל'},{id:'grenadine',a:'15 מ״ל'},{id:'ice',a:'כוס מלאה'},{id:'cherry',a:'1–2',t:'דובדבנים',opt:true}],
+  steps:['ממלאים כוס בקרח ומוזגים ספרייט.','מוסיפים גרנדין, שישקע ויצבע.','מקשטים בדובדבן.'],
+  subs:[{id:'sprite',alt:['soda'],tip:'סודה עם כפית סוכר וטיפת לימון.'}]},
+
+{ id:'virgincolada', name:'קולדה בלי', en:'Virgin Colada', alc:0, color:'#FFF4D6', glass:'hurricane',
+  serve:'כוס גבוהה ומעוקלת, עם קשית', garnish:'דובדבן או משולש אננס', diff:1, time:4,
+  taste:['מתוק','קרמי','פירותי'], tasteNote:'שייק טרופי קפוא. חופשה בלי טיסה.',
+  alcNote:'אפס אלכוהול.',
+  ing:[{id:'pineapple_juice',a:'120 מ״ל'},{id:'coconut_cream',a:'60 מ״ל'},{id:'ice',a:'כוס'},{id:'cherry',a:'1',opt:true}],
+  steps:['שמים בבלנדר מיץ אננס, קרם קוקוס וקרח.','טוחנים עד שהמרקם חלק.','מוזגים ומקשטים.'],
+  subs:[{id:'coconut_cream',alt:['cream','milk'],tip:'שמנת או חלב עם טיפת סוכר.'}]},
+
+{ id:'limonana', name:'לימונענע גרוס', en:'Frozen Limonana', alc:0, color:'#C9F27B', glass:'highball',
+  serve:'כוס גבוהה, קשית עבה', garnish:'עלה נענע ופרוסת לימון', diff:1, time:4,
+  taste:['חמצמץ','רענן','מתוק'], tasteNote:'הקלאסיקה הישראלית של אוגוסט. מקפיא את המוח בכיף.',
+  alcNote:'אפס אלכוהול.',
+  ing:[{id:'lemon',a:'60 מ״ל',t:'מיץ לימון (בערך 2 לימונים)'},{id:'mint',a:'15 עלים',t:'נענע'},{id:'sugar_syrup',a:'40 מ״ל'},{id:'water',a:'150 מ״ל'},{id:'ice',a:'כוס גדושה'}],
+  steps:['שמים הכל בבלנדר.','טוחנים עד שמקבלים ברד ירוק וחלק.','טועמים. חמוץ מדי? עוד סירופ. מתוק מדי? עוד לימון.'],
+  subs:[{id:'lemon',alt:['lime'],tip:'ליים במקום לימון.'},{id:'sugar_syrup',alt:['sugar','honey'],tip:'3 כפות סוכר או דבש.'},{id:'water',alt:['soda'],tip:'סודה במקום מים.'}]},
+
+{ id:'gingerfizz', name:'ג׳ינג׳ר פיז', en:'Virgin Mule', alc:0, color:'#F6D365', glass:'mug',
+  serve:'ספל או כוס גבוהה עם קרח', garnish:'פלח ליים וענף נענע', diff:1, time:2,
+  taste:['חריף','רענן','מבעבע'], tasteNote:'עוקצני, מבעבע ומרענן. מוסקו מיול לאנשים עם תוכניות למחר.',
+  alcNote:'אפס אלכוהול.',
+  ing:[{id:'ginger_beer',a:'150 מ״ל'},{id:'lime',a:'20 מ״ל',t:'מיץ ליים'},{id:'mint',a:'כמה עלים'},{id:'ice',a:'כוס מלאה'}],
+  steps:['מועכים קלות את הנענע בתחתית הכוס.','ממלאים קרח ומוסיפים מיץ ליים.','משלימים בג׳ינג׳ר ביר.'],
+  subs:[{id:'lime',alt:['lemon'],tip:'לימון במקום ליים.'},{id:'ginger_beer',alt:['sprite'],tip:'ספרייט עם ג׳ינג׳ר מגורר.'},{id:'mint',alt:['basil'],tip:'בזיליקום במקום נענע.'}]},
+
+{ id:'cranspritz', name:'חמוציות שפריץ', en:'Cranberry Spritz', alc:0, color:'#E0435E', glass:'wine',
+  serve:'כוס יין עם קרח', garnish:'פלח ליים', diff:1, time:2,
+  taste:['פירותי','חמצמץ','מבעבע'], tasteNote:'אדום, מבעבע וחמצמץ. נראה הכי חגיגי על השולחן.',
+  alcNote:'אפס אלכוהול.',
+  ing:[{id:'cranberry_juice',a:'100 מ״ל'},{id:'sprite',a:'100 מ״ל'},{id:'lime',a:'פלח',t:'ליים'},{id:'ice',a:'כוס מלאה'}],
+  steps:['ממלאים כוס יין בקרח.','מוזגים מיץ חמוציות ומשלימים בספרייט.','סוחטים פלח ליים ומכניסים פנימה.'],
+  subs:[{id:'sprite',alt:['soda'],tip:'סודה במקום ספרייט: פחות מתוק, יותר מבוגר.'},{id:'lime',alt:['lemon'],tip:'לימון במקום ליים.'}]},
+
+{ id:'strawbasil', name:'תות-בזיליקום פיז', en:'Strawberry Basil Fizz', alc:0, color:'#FF8FA3', glass:'highball',
+  serve:'כוס גבוהה עם קרח', garnish:'חצי תות ועלה בזיליקום', diff:1, time:4,
+  taste:['פירותי','עשבוני','מבעבע'], tasteNote:'מתוק-עשבוני ומבעבע. מפתיע כמה שזה עובד.',
+  alcNote:'אפס אלכוהול.',
+  ing:[{id:'strawberry',a:'3',t:'תותים'},{id:'basil',a:'5 עלים'},{id:'lemon',a:'20 מ״ל',t:'מיץ לימון'},{id:'sugar_syrup',a:'15 מ״ל'},{id:'soda',a:'120 מ״ל'},{id:'ice',a:'כוס מלאה'}],
+  steps:['מועכים בכוס תותים, בזיליקום, לימון וסירופ.','ממלאים קרח.','משלימים בסודה ומערבבים.'],
+  subs:[{id:'basil',alt:['mint'],tip:'נענע במקום בזיליקום.'},{id:'lemon',alt:['lime'],tip:'ליים במקום לימון.'},{id:'sugar_syrup',alt:['sugar','honey'],tip:'סוכר או דבש.'}]},
+
+{ id:'virginmary', name:'וירג׳ין מרי', en:'Virgin Mary', alc:0, color:'#B5232B', glass:'highball',
+  serve:'כוס גבוהה עם קרח', garnish:'מקל סלרי', diff:1, time:3,
+  taste:['מלוח','חריף'], tasteNote:'פיקנטי, מלוח ומשביע. מושלם לבוקר שאחרי.',
+  alcNote:'אפס אלכוהול.',
+  ing:[{id:'tomato_juice',a:'150 מ״ל'},{id:'lemon',a:'15 מ״ל',t:'מיץ לימון'},{id:'worcestershire',a:'3 טיפות'},{id:'tabasco',a:'2 טיפות'},{id:'salt',a:'קורט'},{id:'pepper',a:'קורט'},{id:'ice',a:'כוס מלאה'},{id:'celery',a:'מקל',opt:true}],
+  steps:['שמים בכוס קרח, מיץ עגבניות ולימון.','מתבלים במלח, פלפל, טבסקו ווסטרשייר.','מערבבים, טועמים ומתקנים.'],
+  subs:[{id:'lemon',alt:['lime'],tip:'ליים במקום לימון.'},{id:'tabasco',alt:['pepper'],tip:'עוד פלפל שחור.'}]},
+
+{ id:'espressotonic', name:'אספרסו טוניק', en:'Espresso Tonic', alc:0, color:'#6F4E37', glass:'highball',
+  serve:'כוס גבוהה ושקופה, כדי לראות את השכבות', garnish:'רצועת קליפת תפוז', diff:1, time:2,
+  taste:['מריר','מבעבע','רענן'], tasteNote:'קפה קר שפגש בועות. מריר, מרענן ומפתיע.',
+  alcNote:'אפס אלכוהול, אבל יש קפאין.',
+  ing:[{id:'espresso',a:'30 מ״ל'},{id:'tonic',a:'120 מ״ל'},{id:'ice',a:'כוס מלאה'},{id:'orange',a:'רצועה',t:'קליפת תפוז',opt:true}],
+  steps:['ממלאים כוס בקרח ומוזגים טוניק.','שופכים את האספרסו לאט מעל, על גב כף, כדי ליצור שכבות.','מקשטים בקליפת תפוז. מערבבים רק לפני ששותים.'],
+  subs:[{id:'tonic',alt:['soda'],tip:'סודה במקום טוניק: פחות מריר.'}]}
+];
+
+/* ================== GLASSES (modern SVG) ================== */
+const GLASSES = {
+  highball:{bowl:'M16 8 L44 8 L42 74 L18 74 Z', liq:'M17.6 26 L42.5 26 L41.2 72 L18.8 72 Z', extra:'', hl:'M21.5 14 L20.5 66'},
+  rocks:{bowl:'M10 34 L50 34 L47 74 L13 74 Z', liq:'M11.6 46 L48.4 46 L46.1 72 L13.9 72 Z', extra:'', hl:'M15.5 40 L17 68'},
+  martini:{bowl:'M6 12 L54 12 L30 42 Z', liq:'M11 17 L49 17 L30 39 Z', extra:'M30 42 L30 70 M19 72 L41 72', hl:'M13 15.5 L22 26'},
+  coupe:{bowl:'M8 16 L52 16 Q50 38 30 38 Q10 38 8 16 Z', liq:'M11 21 L49 21 Q46 35 30 35 Q14 35 11 21 Z', extra:'M30 38 L30 70 M19 72 L41 72', hl:'M13 20 Q15 30 23 33'},
+  wine:{bowl:'M14 8 L46 8 Q48 40 30 42 Q12 40 14 8 Z', liq:'M15 22 L45 22 Q44 38 30 39.5 Q16 38 15 22 Z', extra:'M30 42 L30 70 M19 72 L41 72', hl:'M18.5 12 Q17.5 30 24 37'},
+  flute:{bowl:'M22 6 L38 6 Q38 44 30 46 Q22 44 22 6 Z', liq:'M23.2 16 L36.8 16 Q36.5 42 30 43.6 Q23.5 42 23.2 16 Z', extra:'M30 46 L30 70 M21 72 L39 72', hl:'M25.5 10 L25.8 38'},
+  mug:{bowl:'M12 18 L44 18 L42 74 L14 74 Z', liq:'M13.5 30 L42.6 30 L41.2 72 L15 72 Z', extra:'M44 30 Q56 30 56 44 Q56 58 43 58', hl:'M17.5 24 L18.5 68'},
+  hurricane:{bowl:'M18 6 L42 6 Q36 26 44 44 Q48 58 36 66 L36 72 L24 72 L24 66 Q12 58 16 44 Q24 26 18 6 Z', liq:'M21.5 24 L38.5 24 Q35 33 41.5 44 Q45 56 34.5 63.5 L25.5 63.5 Q15 56 18.5 44 Q25 33 21.5 24 Z', extra:'M17 75 L43 75', hl:'M22 11 Q20 30 20.5 48'}
+};
+const GLASS_NAMES = {highball:'כוס גבוהה',rocks:'כוס נמוכה',martini:'כוס מרטיני',coupe:'כוס קופה',wine:'כוס יין',flute:'כוס שמפניה',mug:'ספל',hurricane:'כוס הוריקן'};
+let gid = 0;
+function glassSVG(type,color){
+  const g = GLASSES[type] || GLASSES.highball;
+  const id = 'lg' + (++gid);
+  return `<svg viewBox="0 0 60 80" aria-hidden="true">
+    <defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${color}" stop-opacity=".98"/><stop offset="1" stop-color="${color}" stop-opacity=".55"/></linearGradient></defs>
+    <path d="${g.bowl}" fill="rgba(255,255,255,.75)"/>
+    <path class="liq" d="${g.liq}" fill="url(#${id})"/>
+    <path d="${g.bowl}" fill="none" stroke="rgba(46,31,26,.7)" stroke-width="1.6" stroke-linejoin="round"/>
+    ${g.extra?`<path d="${g.extra}" fill="none" stroke="rgba(46,31,26,.7)" stroke-width="1.6" stroke-linecap="round"/>`:''}
+    <path d="${g.hl}" fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="2.2" stroke-linecap="round"/>
+  </svg>`;
+}
+
+/* ================== STATE ================== */
+const STORE_KEY = 'hometails-v1';
+let selected = new Set();
+let favs = new Set();
+let custom = [];
+let tab = 'now';
+let alcFilter = 'all';
+
+try{
+  const saved = JSON.parse(localStorage.getItem(STORE_KEY) || 'null');
+  if(saved){
+    selected = new Set((saved.sel||[]).filter(id=>ING[id]));
+    favs = new Set((saved.fav||[]).filter(id=>RECIPES.some(r=>r.id===id)));
+    custom = Array.isArray(saved.custom) ? saved.custom.slice(0,30) : [];
+  }
+}catch(e){}
+
+function save(){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify({sel:[...selected], custom, fav:[...favs]})); }catch(e){}
+}
+
+/* ================== HELPERS ================== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm = s => String(s).toLowerCase().replace(/[׳'"״`]/g,'').replace(/\s+/g,' ').trim();
+const ingName = id => ING[id] ? ING[id].name : id;
+const catName = id => (CATS.find(c=>c.id===id)||{}).name || '';
+const ALC_LABEL = ['בלי אלכוהול','קליל','בינוני','חזק'];
+const ALC_SHORT = ['0%','קליל','בינוני','חזק'];
+const DIFF_LABEL = ['','קל','בינוני','למתקדמים'];
+const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function matchesQuery(ing,q){
+  if(!q) return true;
+  if(norm(ing.name).includes(q)) return true;
+  return ing.aliases.some(a=>norm(a).includes(q));
+}
+
+let toastTimer;
+function toast(msg){
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+function bump(el){ el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+
+const SPARK = ['#F0657A','#FFBDC0','#2E1F1A','#FFD8DA'];
+function sparks(x,y){
+  if(reduced()) return;
+  for(let i=0;i<16;i++){
+    const p = document.createElement('span');
+    p.className = 'cf';
+    const ang = Math.random()*Math.PI*2, dist = 40 + Math.random()*70;
+    p.style.cssText = `left:${x}px;top:${y}px;background:${SPARK[i%4]};--dx:${Math.cos(ang)*dist}px;--dy:${Math.sin(ang)*dist-30}px`;
+    p.addEventListener('animationend', ()=>p.remove());
+    document.body.appendChild(p);
+  }
+}
+
+/* ================== MATCHING ================== */
+function analyze(r){
+  const req = r.ing.filter(i=>!i.opt);
+  const missing = [], swaps = [];
+  let have = 0, haveReal = 0;
+  for(const i of req){
+    if(selected.has(i.id)){ have++; if(i.id!=='ice') haveReal++; continue; }
+    const s = (r.subs||[]).find(s=>s.id===i.id);
+    const alt = s && s.alt.find(a=>selected.has(a));
+    if(alt){ have++; haveReal++; swaps.push({id:i.id, alt, tip:s.tip}); }
+    else missing.push({id:i.id, sub:s});
+  }
+  return {missing, swaps, have, haveReal, total:req.length};
+}
+
+function passAlc(r){
+  if(alcFilter==='na') return r.alc===0;
+  if(alcFilter==='alc') return r.alc>0;
+  return true;
+}
+
+function computeLists(){
+  const all = RECIPES.filter(passAlc).map(r=>({r, a:analyze(r)}));
+  const now = all.filter(x=>x.a.missing.length===0)
+                 .sort((x,y)=>x.r.diff-y.r.diff || x.r.time-y.r.time);
+  const almost = all.filter(x=>x.a.missing.length>0 && x.a.missing.length<=2 && x.a.haveReal>0)
+                    .sort((x,y)=>x.a.missing.length-y.a.missing.length || y.a.haveReal-x.a.haveReal);
+  const everything = [...all].sort((x,y)=>x.a.missing.length-y.a.missing.length);
+  const fav = all.filter(x=>favs.has(x.r.id)).sort((x,y)=>x.a.missing.length-y.a.missing.length);
+  return {now, almost, all:everything, fav};
+}
+
+/* ================== INGREDIENT UI ================== */
+const X_SM = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>';
+const CAT_ICONS = {
+  alc:'<path d="M10 2h4v4l2 3v12a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V9l2-3z"/>',
+  soft:'<path d="M5 7h14l-1.5 14h-11z"/><path d="M14 7l2-5"/>',
+  sweet:'<path d="M12 3c3 4 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 3-7 6-11z"/>',
+  fruit:'<path d="M5 19C5 10 11 4 20 4c0 9-6 15-15 15z"/><path d="M5 19l8-8"/>',
+  extra:'<path d="M12 2l8 4.5v9L12 20l-8-4.5v-9z"/>'
+};
+const MAX_TOKENS = 6;
+
+function renderTokens(){
+  const ids = INGS.filter(i=>selected.has(i.id));
+  const all = [...ids.map(i=>({k:'i',id:i.id,name:i.name})), ...custom.map(n=>({k:'c',id:n,name:n}))];
+  const shownT = all.slice(-MAX_TOKENS);
+  const hidden = all.length - shownT.length;
+  $('#tokens').innerHTML =
+    (hidden>0 ? `<button class="tok more" dir="ltr" id="moreTok" aria-label="עוד ${hidden} מרכיבים">+${hidden}</button>` : '') +
+    shownT.map(t=>`<span class="tok${t.k==='c'?' custom':''}">${esc(t.name)}<button class="x xb" ${t.k==='i'?`data-rm="${t.id}"`:`data-rmc="${esc(t.id)}"`} aria-label="הסרת ${esc(t.name)}">${X_SM}</button></span>`).join('');
+  $('#q').placeholder = all.length ? 'עוד משהו?' : 'הקלידו מרכיב...';
+  $('#browseN').textContent = all.length ? `${all.length} נבחרו` : '';
+  $('#clear').hidden = !all.length;
+}
+
+
+/* dropdown (combobox) */
+let ddItems = [], ddIndex = -1;
+function renderDropdown(){
+  const raw = $('#q').value.trim();
+  const q = norm(raw);
+  const dd = $('#dd');
+  if(!q){ closeDropdown(); return; }
+  const matches = INGS.filter(i=>matchesQuery(i,q))
+    .sort((a,b)=>(norm(a.name).startsWith(q)?0:1)-(norm(b.name).startsWith(q)?0:1))
+    .slice(0,6);
+  ddItems = matches.map(i=>({type:'ing', id:i.id}));
+  if(!matches.some(i=>norm(i.name)===q)) ddItems.push({type:'new', name:raw});
+  ddIndex = 0;
+  dd.innerHTML = ddItems.map((it,k)=> it.type==='ing'
+    ? `<li><button class="opt" role="option" id="op${k}" data-k="${k}" aria-selected="${k===0}">${esc(ingName(it.id))}${selected.has(it.id)?'<span class="on">נבחר</span>':`<small>${catName(ING[it.id].cat)}</small>`}</button></li>`
+    : `<li><button class="opt add-new" role="option" id="op${k}" data-k="${k}" aria-selected="${k===0}">הוספת "${esc(it.name)}"</button></li>`
+  ).join('');
+  dd.hidden = false;
+  $('#q').setAttribute('aria-expanded','true');
+  $('#q').setAttribute('aria-activedescendant','op0');
+}
+function closeDropdown(){
+  $('#dd').hidden = true; ddItems = []; ddIndex = -1;
+  $('#q').setAttribute('aria-expanded','false');
+  $('#q').removeAttribute('aria-activedescendant');
+}
+function moveDD(d){
+  if(!ddItems.length) return;
+  ddIndex = (ddIndex + d + ddItems.length) % ddItems.length;
+  document.querySelectorAll('#dd .opt').forEach((o,k)=>o.setAttribute('aria-selected', k===ddIndex));
+  $('#q').setAttribute('aria-activedescendant','op'+ddIndex);
+}
+function pickDD(k){
+  const it = ddItems[k];
+  if(!it) return;
+  const anchor = $('#field');
+  if(it.type==='ing'){
+    if(selected.has(it.id)){ toast('כבר בבר'); }
+    else { selected.add(it.id); celebrate(afterChange(), anchor); }
+  } else {
+    const q = norm(it.name);
+    if(!custom.some(n=>norm(n)===q)){ custom.push(it.name); afterChange(); toast('נוסף לבר'); }
+  }
+  $('#q').value = '';
+  closeDropdown();
+  $('#q').focus();
+}
+
+/* full picker sheet */
+function renderPicker(){
+  const q = norm($('#pkSearch').value);
+  let html = '';
+  for(const c of CATS){
+    const list = INGS.filter(i=>i.cat===c.id && matchesQuery(i,q));
+    if(!list.length) continue;
+    html += `<div class="pk-sec"><h5><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${CAT_ICONS[c.id]}</svg>${c.name}</h5>
+      <div class="pk-list">${list.map(i=>`<button class="row" data-id="${i.id}" aria-pressed="${selected.has(i.id)}"><span class="box">${CHECK}</span>${esc(i.name)}</button>`).join('')}</div></div>`;
+  }
+  $('#pkBody').innerHTML = html || '<p style="color:var(--muted);padding:20px 0">לא נמצא</p>';
+  updatePickerDone();
+}
+function updatePickerDone(){
+  const n = selected.size + custom.length;
+  $('#pkDone').textContent = n ? `סיום · ${n} נבחרו` : 'סיום';
+}
+
+/* ================== RESULTS ================== */
+const CHEV = '<span class="go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></span>';
+const CLOCK = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+const SWAP_SM = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h14l-4-4M20 16H6l4 4"/></svg>';
+const PLUS_SM = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+const dl = n => `<span class="dl" title="קושי: ${DIFF_LABEL[n]}">${[1,2,3].map(i=>`<i class="${i<=n?'f':''}"></i>`).join('')}</span>`;
+
+function statusHTML(a){
+  if(a.missing.length===0){
+    if(!a.swaps.length) return '';
+    return `<div class="status swap">${SWAP_SM}<span>עם <b>${a.swaps.map(s=>esc(ingName(s.alt))).join(', ')}</b></span></div>`;
+  }
+  return `<div class="status miss">${PLUS_SM}<span>חסר: <b>${a.missing.map(m=>esc(ingName(m.id))).join(', ')}</b></span></div>`;
+}
+
+const cardCache = new Map();
+function getCard(r){
+  let el = cardCache.get(r.id);
+  if(el) return el;
+  el = document.createElement('div');
+  el.setAttribute('role','button');
+  el.tabIndex = 0;
+  el.setAttribute('aria-label', r.name);
+  el.className = 'card';
+  el.dataset.r = r.id;
+  el.style.setProperty('--c', r.color);
+  el.innerHTML = `<span class="gl">${glassSVG(r.glass,r.color)}</span>
+    <h3>${esc(r.name)}</h3>${CHEV}
+    <button class="heart" data-fav="${r.id}" aria-pressed="${favs.has(r.id)}" aria-label="הוספה לאהובים: ${esc(r.name)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.3A4.2 4.2 0 0 1 12 7.6a4.2 4.2 0 0 1 7.5 2.6c0 5.7-7.5 10.3-7.5 10.3z"/></svg></button>
+    <span class="meta"><span class="badge a${r.alc}" title="${ALC_LABEL[r.alc]}">${ALC_SHORT[r.alc]}</span><span class="t">${CLOCK}${r.time}′</span>${dl(r.diff)}</span>
+    <span class="slot"></span>`;
+  el._slot = el.querySelector('.slot');
+  el._s = '';
+  el.addEventListener('animationend', e=>{ if(e.animationName==='cardIn') el.classList.remove('enter'); });
+  cardCache.set(r.id, el);
+  return el;
+}
+
+let lastLists = null;
+let shown = new Set();
+let nowIds = null;
+function renderResults(){
+  const lists = computeLists();
+  lastLists = lists;
+  const newNow = new Set(lists.now.map(x=>x.r.id));
+  const unlocked = nowIds ? lists.now.filter(x=>!nowIds.has(x.r.id)).map(x=>x.r) : [];
+  if(nowIds && newNow.size !== nowIds.size){ bump($('#nNow')); bump($('#mbarPill').parentNode); }
+  nowIds = newNow;
+  $('#nNow').textContent = lists.now.length;
+  $('#nAlmost').textContent = lists.almost.length;
+  $('#nAll').textContent = lists.all.length;
+  $('#nFav').textContent = lists.fav.length;
+
+  const list = lists[tab];
+  const grid = $('#grid');
+  if(!list.length){
+    const realSel = [...selected].filter(id=>id!=='ice').length;
+    let title;
+    if(tab==='now') title = realSel===0 ? 'הכוס עוד ריקה' : 'עוד מרכיב או שניים...';
+    else if(tab==='almost') title = 'אין כאן כלום כרגע';
+    else if(tab==='fav') title = 'עוד אין אהובים. לחצו על הלב בקוקטייל';
+    else title = 'אין מתכונים בסינון הזה';
+    grid.innerHTML = `<div class="empty">${glassSVG('martini','#F3E3D3')}<h3>${title}</h3></div>`;
+    shown = new Set();
+  } else {
+    let i = 0;
+    const next = new Set();
+    const nodes = list.map(({r,a})=>{
+      const el = getCard(r);
+      const s = statusHTML(a);
+      if(el._s !== s){ el._slot.innerHTML = s; el._s = s; }
+      if(!shown.has(r.id)){
+        el.classList.add('enter');
+        el.style.animationDelay = Math.min(i++,10)*40+'ms';
+      }
+      next.add(r.id);
+      return el;
+    });
+    grid.replaceChildren(...nodes);
+    shown = next;
+  }
+  updateBar();
+  return unlocked;
+}
+
+function updateBar(){
+  const n = selected.size + custom.length;
+  $('#mbarText').textContent = n ? `${n} בבר` : 'הבר ריק';
+  $('#mbarPill').textContent = `${lastLists ? lastLists.now.length : 0} קוקטיילים`;
+}
+
+function celebrate(unlocked, el){
+  if(!unlocked.length) return;
+  if(el){ const r = el.getBoundingClientRect(); sparks(r.left + r.width/2, r.top + r.height/2); }
+  toast(unlocked.length===1 ? `נפתח: ${unlocked[0].name}` : `נפתחו ${unlocked.length} קוקטיילים`);
+}
+
+/* ================== RECIPE SHEET ================== */
+const ic = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const I_HAVE = ic('<path d="M5 12l5 5L20 7"/>');
+const I_SUB = ic('<path d="M4 8h14l-4-4M20 16H6l4 4"/>');
+const I_NEED = ic('<path d="M12 5v14M5 12h14"/>');
+const I_OPT = ic('<path d="M6 12h12"/>');
+const fi = p => `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const F_ALC = fi('<path d="M8 3h8l-1 7a3 3 0 0 1-6 0z"/><path d="M12 13v8M8 21h8"/>');
+const F_DIFF = fi('<path d="M4 20V14M10 20V9M16 20V4"/>');
+const F_TIME = fi('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>');
+const F_QTY = fi('<path d="M7 3h10l-1 18H8z"/><path d="M7.5 9h9"/>');
+const BULB = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg>';
+
+let lastFocus = null;
+function openModal(m, focusEl){
+  lastFocus = document.activeElement;
+  m.hidden = false;
+  document.body.style.overflow = 'hidden';
+  m.querySelector('.sheet').scrollTop = 0;
+  (focusEl || m.querySelector('button')).focus();
+}
+function closeModal(m){
+  m.hidden = true;
+  if($('#modal').hidden && $('#picker').hidden) document.body.style.overflow = '';
+  if(lastFocus) lastFocus.focus();
+}
+
+function openRecipe(id){
+  const r = RECIPES.find(x=>x.id===id);
+  if(!r) return;
+  const a = analyze(r);
+  const ingHTML = r.ing.map(i=>{
+    const name = i.t || ingName(i.id);
+    let st, note = '';
+    if(selected.has(i.id)) st = `<span class="st have" title="יש לכם">${I_HAVE}</span><span class="sr">יש לכם:</span>`;
+    else {
+      const sw = a.swaps.find(s=>s.id===i.id);
+      if(sw){ st = `<span class="st sub" title="תחליף">${I_SUB}</span>`; note = `<span class="note">${esc(sw.tip)}</span>`; }
+      else if(i.opt){ st = `<span class="st opt" title="רשות">${I_OPT}</span>`; note = '<span class="note">רשות</span>'; }
+      else { st = `<span class="st need" title="חסר">${I_NEED}</span><span class="sr">חסר:</span>`; }
+    }
+    return `<li>${st}<div><span class="amt">${esc(i.a)}</span> ${esc(name)}${note}</div></li>`;
+  }).join('');
+  const subsHTML = (r.subs||[]).map(s=>`<li><b>${esc(ingName(s.id))}:</b> ${esc(s.tip)}</li>`).join('');
+
+  const sheet = $('#sheet');
+  sheet.style.setProperty('--c', r.color);
+  sheet.innerHTML = `
+    <button class="close" data-close aria-label="סגירה">${X_SM}</button>
+    <div class="s-hero">
+      <div class="gl">${glassSVG(r.glass,r.color)}</div>
+      <button class="heart big" data-fav="${r.id}" aria-pressed="${favs.has(r.id)}" aria-label="הוספה לאהובים"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.3A4.2 4.2 0 0 1 12 7.6a4.2 4.2 0 0 1 7.5 2.6c0 5.7-7.5 10.3-7.5 10.3z"/></svg></button>
+      <h2 id="mTitle">${esc(r.name)}</h2>
+      <p class="en" dir="ltr">${esc(r.en)}</p>
+      <div class="taste">${r.taste.map(t=>`<span>${t}</span>`).join('')}</div>
+    </div>
+    <div class="sheet-body">
+      <div class="facts">
+        <div class="fact" title="אלכוהול">${F_ALC}<b>${ALC_LABEL[r.alc]}</b></div>
+        <div class="fact" title="קושי">${F_DIFF}<b>${DIFF_LABEL[r.diff]}</b></div>
+        <div class="fact" title="זמן הכנה">${F_TIME}<b>${r.time} דק׳</b>${r.timeNote?`<em>${esc(r.timeNote)}</em>`:''}</div>
+        <div class="fact" title="כמות">${F_QTY}<b>${r.batch?'קנקן':'מנה'}</b></div>
+      </div>
+      <div class="sec"><h4>מה צריך</h4><ul class="ing-list">${ingHTML}</ul></div>
+      <div class="sec"><h4>הכנה</h4>
+        <ol class="steps">${r.steps.map(s=>`<li><span>${esc(s)}</span></li>`).join('')}</ol>
+        ${r.shake?`<div class="tip">${BULB}<span>אין שייקר? צנצנת עם מכסה.</span></div>`:''}
+      </div>
+      <div class="two">
+        <div class="sec"><h4>הגשה</h4><p>${esc(r.serve)}</p></div>
+        <div class="sec"><h4>קישוט</h4><p>${esc(r.garnish)}</p></div>
+      </div>
+      ${subsHTML?`<div class="sec"><h4>חלופות</h4><ul class="subs">${subsHTML}</ul></div>`:''}
+      <div class="two">
+        <div class="sec"><h4>טעם</h4><p>${esc(r.tasteNote)}</p></div>
+        <div class="sec"><h4>אלכוהול</h4><p>${esc(r.alcNote)}</p></div>
+      </div>
+    </div>`;
+  openModal($('#modal'));
+}
+
+/* ================== EVENTS ================== */
+function afterChange(){ save(); renderTokens(); return renderResults(); }
+
+$('#field').addEventListener('click', e=>{
+  const x = e.target.closest('.x');
+  if(x){
+    if(x.dataset.rm) selected.delete(x.dataset.rm);
+    else custom = custom.filter(n=>n!==x.dataset.rmc);
+    afterChange();
+    return;
+  }
+  if(e.target.closest('#moreTok')){ $('#pkSearch').value=''; renderPicker(); openModal($('#picker'), $('#pkSearch')); return; }
+  $('#q').focus();
+});
+
+$('#q').addEventListener('input', renderDropdown);
+$('#q').addEventListener('keydown', e=>{
+  if(e.key==='ArrowDown'){ e.preventDefault(); if($('#dd').hidden) renderDropdown(); else moveDD(1); }
+  else if(e.key==='ArrowUp'){ e.preventDefault(); moveDD(-1); }
+  else if(e.key==='Enter'){ e.preventDefault(); if(ddItems.length) pickDD(ddIndex); }
+  else if(e.key==='Escape'){ closeDropdown(); }
+  else if(e.key==='Backspace' && !e.target.value){
+    if(custom.length){ custom.pop(); afterChange(); }
+    else {
+      const last = INGS.filter(i=>selected.has(i.id)).pop();
+      if(last){ selected.delete(last.id); afterChange(); }
+    }
+  }
+});
+$('#q').addEventListener('blur', ()=> setTimeout(()=>{ if(!$('#dd').contains(document.activeElement)) closeDropdown(); }, 120));
+$('#dd').addEventListener('mousedown', e=> e.preventDefault());
+$('#dd').addEventListener('click', e=>{
+  const o = e.target.closest('.opt');
+  if(o) pickDD(+o.dataset.k);
+});
+
+$('#browse').addEventListener('click', ()=>{
+  $('#pkSearch').value = '';
+  renderPicker();
+  openModal($('#picker'), $('#pkSearch'));
+});
+$('#pkSearch').addEventListener('input', renderPicker);
+$('#pkBody').addEventListener('click', e=>{
+  const row = e.target.closest('.row');
+  if(!row) return;
+  const id = row.dataset.id;
+  const on = !selected.has(id);
+  on ? selected.add(id) : selected.delete(id);
+  row.setAttribute('aria-pressed', on);
+  updatePickerDone();
+  const unlocked = afterChange();
+  if(unlocked.length){ const r = row.getBoundingClientRect(); sparks(r.left + 20, r.top + r.height/2); }
+});
+
+$('#basics').addEventListener('click', e=>{
+  ['ice','sugar','lemon','soda','water','salt','pepper'].forEach(id=>selected.add(id));
+  const unlocked = afterChange();
+  if(unlocked.length) celebrate(unlocked, e.currentTarget);
+  else toast('נוספה ערכת בסיס');
+});
+
+$('#clear').addEventListener('click', ()=>{
+  selected.clear(); custom = [];
+  afterChange();
+  toast('הבר התרוקן');
+});
+
+const TAB_ORDER = ['now','almost','all','fav'];
+function moveInd(){
+  const b = document.querySelector('.tab[aria-selected="true"]');
+  const box = document.querySelector('.tabs').getBoundingClientRect();
+  const r = b.getBoundingClientRect();
+  const ind = $('#tabInd');
+  ind.style.width = r.width + 'px';
+  ind.style.transform = `translateX(${r.right - box.right + 4}px)`;
+}
+addEventListener('resize', moveInd);
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click', ()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected', x===b));
+  tab = b.dataset.tab;
+  moveInd();
+  shown = new Set();
+  renderResults();
+}));
+
+document.querySelectorAll('.fpill').forEach(b=>b.addEventListener('click', ()=>{
+  const turnOn = b.getAttribute('aria-pressed') !== 'true';
+  document.querySelectorAll('.fpill').forEach(x=>x.setAttribute('aria-pressed', turnOn && x===b));
+  alcFilter = turnOn ? b.dataset.f : 'all';
+  shown = new Set();
+  renderResults();
+}));
+
+function toggleFav(id, btn){
+  const on = !favs.has(id);
+  on ? favs.add(id) : favs.delete(id);
+  document.querySelectorAll(`.heart[data-fav="${id}"]`).forEach(h=>{ h.setAttribute('aria-pressed', on); h.classList.remove('beat'); void h.offsetWidth; if(on) h.classList.add('beat'); });
+  if(on && btn){ const r = btn.getBoundingClientRect(); sparks(r.left + r.width/2, r.top + r.height/2); }
+  save();
+  $('#nFav').textContent = lastLists ? computeLists().fav.length : favs.size;
+  if(tab==='fav') renderResults();
+  toast(on ? 'נוסף לאהובים' : 'הוסר מהאהובים');
+}
+$('#grid').addEventListener('click', e=>{
+  const h = e.target.closest('.heart');
+  if(h){ e.stopPropagation(); toggleFav(h.dataset.fav, h); return; }
+  const c = e.target.closest('.card');
+  if(c) openRecipe(c.dataset.r);
+});
+$('#grid').addEventListener('keydown', e=>{
+  if((e.key==='Enter'||e.key===' ') && e.target.classList.contains('card')){ e.preventDefault(); openRecipe(e.target.dataset.r); }
+});
+$('#sheet').addEventListener('click', e=>{
+  const h = e.target.closest('.heart');
+  if(h) toggleFav(h.dataset.fav, h);
+});
+
+$('#surprise').addEventListener('click', ()=>{
+  const pool = lastLists.now.length ? lastLists.now : lastLists.almost.length ? lastLists.almost : lastLists.all;
+  if(!pool.length){ toast('אין מה להגריל'); return; }
+  const btn = $('#surprise');
+  btn.classList.remove('roll'); void btn.offsetWidth; btn.classList.add('roll');
+  const pick = pool[Math.floor(Math.random()*pool.length)].r.id;
+  setTimeout(()=>openRecipe(pick), reduced() ? 0 : 450);
+});
+
+document.querySelectorAll('.modal').forEach(m=>{
+  m.addEventListener('click', e=>{
+    if(e.target===m || e.target.closest('[data-close]')) closeModal(m);
+  });
+});
+document.addEventListener('keydown', e=>{
+  const m = [...document.querySelectorAll('.modal')].find(x=>!x.hidden);
+  if(!m) return;
+  if(e.key==='Escape') closeModal(m);
+  if(e.key==='Tab'){
+    const f = m.querySelectorAll('button, input');
+    if(!f.length) return;
+    const first = f[0], last = f[f.length-1];
+    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+  }
+});
+
+$('#mbar').addEventListener('click', ()=>{
+  $('#results').scrollIntoView({behavior: reduced() ? 'auto' : 'smooth', block:'start'});
+});
+
+if('IntersectionObserver' in window){
+  new IntersectionObserver(entries=>{
+    entries.forEach(en=> $('#mbar').classList.toggle('hide', !en.isIntersecting));
+  }, {threshold:.1}).observe(document.querySelector('.panel-ings'));
+}
+
+/* rising bubbles in the background, like a fizzy drink */
+(function(){
+  if(reduced()) return;
+  const bg = document.querySelector('.bg');
+  const n = innerWidth < 640 ? 14 : 24;
+  for(let i=0;i<n;i++){
+    const b = document.createElement('span');
+    b.className = 'bub';
+    const s = 6 + Math.random()*Math.random()*34;
+    b.style.cssText = `width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-duration:${12+Math.random()*16}s;animation-delay:${-Math.random()*26}s`;
+    bg.appendChild(b);
+  }
+  // a few citrus wheels drifting around
+  const wheel = (rind,flesh)=>`<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="${rind}"/><circle cx="20" cy="20" r="15" fill="#FFF8EE"/><circle cx="20" cy="20" r="13.5" fill="${flesh}"/>${[0,45,90,135].map(a=>`<path d="M20 20 L${20+13.5*Math.cos(a*Math.PI/180)} ${20+13.5*Math.sin(a*Math.PI/180)} M20 20 L${20-13.5*Math.cos(a*Math.PI/180)} ${20-13.5*Math.sin(a*Math.PI/180)}" stroke="#FFF8EE" stroke-width="1.6"/>`).join('')}<circle cx="20" cy="20" r="2.2" fill="#FFF8EE"/></svg>`;
+  const kinds = [wheel('#FF9F45','#FFC37A'), wheel('#FF6F9E','#FFA8C5'), wheel('#9BD36A','#C9EE9E')];
+  const m = innerWidth < 640 ? 3 : 6;
+  for(let i=0;i<m;i++){
+    const w = document.createElement('span');
+    w.className = 'slice';
+    const s = 26 + Math.random()*30;
+    w.style.cssText = `width:${s}px;height:${s}px;left:${5+Math.random()*90}%;top:${10+Math.random()*80}%;animation-duration:${9+Math.random()*8}s;animation-delay:${-Math.random()*10}s`;
+    w.innerHTML = kinds[i%3];
+    w.firstChild.style.animationDuration = (20+Math.random()*20)+'s';
+    bg.appendChild(w);
+  }
+})();
+
+renderTokens();
+renderResults();
+moveInd();
+</script>
+</body>
+</html>
