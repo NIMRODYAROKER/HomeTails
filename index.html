@@ -246,6 +246,14 @@ input{font:inherit;color:inherit}
 .status.miss{background:var(--amber-bg);color:var(--amber)}
 .status.swap{background:var(--mint-bg);color:var(--mint)}
 .status b{font-weight:600}
+.csearch{position:relative;margin-bottom:14px}
+.csearch input{width:100%;height:46px;padding:0 42px 0 16px;border-radius:999px;border:1.5px solid var(--line2);background:#fff;font-size:16px;transition:border-color .2s,box-shadow .2s}
+.csearch input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 5px var(--accent-soft)}
+.csearch svg{position:absolute;right:15px;top:50%;width:18px;height:18px;margin-top:-9px;stroke:var(--muted);pointer-events:none}
+.divider{grid-column:1/-1;display:flex;align-items:center;gap:10px;margin:10px 0 2px;font-size:14px;font-weight:700;color:var(--muted)}
+.divider::after{content:"";flex:1;height:1px;background:var(--line2)}
+.divider.almost{color:var(--amber)}
+.divider:first-child{margin-top:0}
 .empty{grid-column:1/-1;text-align:center;padding:34px 12px;color:var(--muted)}
 .empty svg{width:64px;height:86px;margin-bottom:8px;overflow:visible;animation:float 3.4s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-6px) rotate(4deg)}}
@@ -322,13 +330,14 @@ input{font:inherit;color:inherit}
 
 /* ---------- Mobile bar ---------- */
 .mbar{
-  position:fixed;left:14px;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:40;
-  height:60px;padding:0 9px 0 20px;border-radius:999px;background:var(--text);color:#F3E6DA;
-  display:flex;align-items:center;justify-content:space-between;font-weight:500;font-size:15px;
-  box-shadow:0 4px 0 #000,0 18px 36px -14px rgba(70,30,20,.6);transition:transform .45s var(--spring);
+  position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));z-index:40;
+  transform:translateX(-50%);transition:transform .45s var(--spring);
 }
-.mbar.hide{transform:translateY(170%)}
-.mbar b{background:var(--accent);color:#fff;height:42px;padding:0 16px;border-radius:999px;display:flex;align-items:center;gap:6px;font-weight:600;font-size:14.5px;box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+.mbar.hide{transform:translate(-50%,200%)}
+.mbar b{background:var(--accent);color:#fff;height:50px;padding:0 22px;border-radius:999px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:15.5px;white-space:nowrap;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 4px 0 var(--accent-deep),0 16px 30px -12px var(--accent)}
+.mbar:active b{transform:translateY(2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 1px 0 var(--accent-deep)}
+.mbar b svg{animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
 .mbar b svg{width:15px;height:15px;stroke:#fff}
 @media (min-width:980px){.mbar{display:none}}
 
@@ -401,10 +410,14 @@ footer{max-width:1140px;margin:0 auto;padding:0 18px 120px}
     </div>
     <div class="filters" role="group" aria-label="סינון אלכוהול">
       <button class="fpill press b-ghost" data-f="na" aria-pressed="false">בלי אלכוהול</button>
-      <button class="fpill press b-ghost" data-f="alc" aria-pressed="false">עם אלכוהול</button>
+      <button class="fpill press b-ghost" data-f="alc" aria-pressed="true">עם אלכוהול</button>
       <button class="dice press b-primary" id="surprise" aria-label="תפתיעו אותי" title="תפתיעו אותי">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="8.5" cy="8.5" r="1.1" fill="#fff"/><circle cx="15.5" cy="15.5" r="1.1" fill="#fff"/><circle cx="12" cy="12" r="1.1" fill="#fff"/><circle cx="15.5" cy="8.5" r="1.1" fill="#fff"/><circle cx="8.5" cy="15.5" r="1.1" fill="#fff"/></svg>
       </button>
+    </div>
+    <div class="csearch">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <input id="cq" type="search" placeholder="חיפוש קוקטייל לפי שם" autocomplete="off" aria-label="חיפוש קוקטייל לפי שם">
     </div>
     <div id="grid" class="grid" role="tabpanel" aria-live="polite"></div>
   </section>
@@ -414,7 +427,7 @@ footer{max-width:1140px;margin:0 auto;padding:0 18px 120px}
   <div class="resp" role="note"><b>שותים באחריות</b><i></i><span>אסור להגיש אלכוהול מתחת לגיל 18</span><i></i><span>שתיתם? לא נוהגים</span></div>
 </footer>
 
-<button class="mbar hide" id="mbar"><span id="mbarText">הבר ריק</span><b><span id="mbarPill">0 קוקטיילים</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></b></button>
+<button class="mbar hide" id="mbar" aria-label="מעבר לקוקטיילים"><b><span id="mbarPill">0 קוקטיילים</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></b></button>
 
 <div class="modal" id="modal" hidden>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="mTitle" id="sheet"></div>
@@ -832,7 +845,7 @@ let selected = new Set();
 let favs = new Set();
 let custom = [];
 let tab = 'now';
-let alcFilter = 'all';
+let alcFilter = 'alc';
 
 try{
   const saved = JSON.parse(localStorage.getItem(STORE_KEY) || 'null');
@@ -1064,12 +1077,14 @@ function renderResults(){
   $('#nAll').textContent = lists.all.length;
   $('#nFav').textContent = lists.fav.length;
 
-  const list = lists[tab];
+  const cq = norm($('#cq').value);
+  const list = cq ? lists[tab].filter(x=>norm(x.r.name).includes(cq) || norm(x.r.en).includes(cq)) : lists[tab];
   const grid = $('#grid');
   if(!list.length){
     const realSel = [...selected].filter(id=>id!=='ice').length;
     let title;
-    if(tab==='now') title = realSel===0 ? 'הכוס עוד ריקה' : 'עוד מרכיב או שניים...';
+    if(cq) title = 'לא מצאנו קוקטייל בשם הזה';
+    else if(tab==='now') title = realSel===0 ? 'הכוס עוד ריקה' : 'עוד מרכיב או שניים...';
     else if(tab==='almost') title = 'אין כאן כלום כרגע';
     else if(tab==='fav') title = 'עוד אין אהובים. לחצו על הלב בקוקטייל';
     else title = 'אין מתכונים בסינון הזה';
@@ -1078,7 +1093,21 @@ function renderResults(){
   } else {
     let i = 0;
     const next = new Set();
-    const nodes = list.map(({r,a})=>{
+    const nodes = [];
+    let lastGroup = null;
+    const groupOf = a => a.missing.length===0 ? 0 : a.missing.length<=2 ? 1 : 2;
+    const GROUPS = ['אפשר להכין עכשיו','כמעט · חסר מרכיב או שניים','חסרים עוד כמה מרכיבים'];
+    list.forEach(({r,a})=>{
+      if(tab==='all' || tab==='fav'){
+        const g = groupOf(a);
+        if(g!==lastGroup && (lastGroup!==null || g!==0)){
+          const h = document.createElement('div');
+          h.className = 'divider' + (g===1?' almost':'');
+          h.innerHTML = `<span>${GROUPS[g]}</span>`;
+          nodes.push(h);
+        }
+        lastGroup = g;
+      }
       const el = getCard(r);
       const s = statusHTML(a);
       if(el._s !== s){ el._slot.innerHTML = s; el._s = s; }
@@ -1087,7 +1116,7 @@ function renderResults(){
         el.style.animationDelay = Math.min(i++,10)*40+'ms';
       }
       next.add(r.id);
-      return el;
+      nodes.push(el);
     });
     grid.replaceChildren(...nodes);
     shown = next;
@@ -1098,7 +1127,6 @@ function renderResults(){
 
 function updateBar(){
   const n = selected.size + custom.length;
-  $('#mbarText').textContent = n ? `${n} בבר` : 'הבר ריק';
   $('#mbarPill').textContent = `${lastLists ? lastLists.now.length : 0} קוקטיילים`;
 }
 
@@ -1205,6 +1233,7 @@ $('#field').addEventListener('click', e=>{
 });
 
 $('#q').addEventListener('input', renderDropdown);
+$('#cq').addEventListener('input', ()=>{ shown = new Set(); renderResults(); });
 $('#q').addEventListener('keydown', e=>{
   if(e.key==='ArrowDown'){ e.preventDefault(); if($('#dd').hidden) renderDropdown(); else moveDD(1); }
   else if(e.key==='ArrowUp'){ e.preventDefault(); moveDD(-1); }
