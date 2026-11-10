@@ -1116,7 +1116,7 @@ function renderResults(){
     const groupOf = a => a.missing.length===0 ? 0 : a.missing.length<=2 ? 1 : 2;
     const GROUPS = ['אפשר להכין עכשיו','כמעט · חסר מרכיב או שניים','חסרים עוד כמה מרכיבים'];
     list.forEach(({r,a})=>{
-      if(tab==='all' || tab==='fav'){
+      if((tab==='all' || tab==='fav') && (selected.size + custom.length) > 0){
         const g = groupOf(a);
         if(g!==lastGroup && (lastGroup!==null || g!==0)){
           const h = document.createElement('div');
@@ -1420,7 +1420,7 @@ if('IntersectionObserver' in window){
 })();
 
 /* auto-update: if a newer version was published, load it (bypasses the browser's saved copy) */
-const APP_VERSION = '6';
+const APP_VERSION = '7';
 (async ()=>{
   try{
     if(!location.protocol.startsWith('http')) return;
