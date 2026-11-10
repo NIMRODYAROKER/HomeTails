@@ -1399,6 +1399,20 @@ if('IntersectionObserver' in window){
   }
 })();
 
+/* auto-update: if a newer version was published, load it (bypasses the browser's saved copy) */
+const APP_VERSION = '4';
+(async ()=>{
+  try{
+    if(!location.protocol.startsWith('http')) return;
+    const res = await fetch(location.pathname + '?check=' + Date.now(), {cache:'no-store'});
+    const m = (await res.text()).match(/const APP_VERSION = '(\d+)'/);
+    if(m && m[1] !== APP_VERSION && sessionStorage.getItem('ht-upd') !== m[1]){
+      sessionStorage.setItem('ht-upd', m[1]);
+      location.replace(location.pathname + '?v=' + m[1]);
+    }
+  }catch(e){}
+})();
+
 renderTokens();
 renderResults();
 moveInd();
