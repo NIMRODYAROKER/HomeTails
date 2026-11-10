@@ -407,6 +407,7 @@ footer{max-width:1140px;margin:0 auto;padding:0 18px 120px}
 .shuffle.spin{animation:roll .5s var(--spring)}
 .feat.swap .feat-txt,.feat.swap .feat-gl{animation:featIn .45s var(--spring)}
 #featName,#featIngs,.feat-gl{transition:filter .6s ease,opacity .6s ease}
+.feat.instant #featName,.feat.instant #featIngs,.feat.instant .feat-gl{transition:none!important}
 .feat.veiled #featName,.feat.veiled #featIngs{filter:blur(9px);opacity:.85;user-select:none}
 .feat.veiled .feat-gl{filter:blur(7px);opacity:.8}
 .feat.veiled .feat-cta{animation:pulse 1.8s ease-in-out infinite}
@@ -1462,7 +1463,7 @@ if('IntersectionObserver' in window){
 })();
 
 /* auto-update: if a newer version was published, load it (bypasses the browser's saved copy) */
-const APP_VERSION = '15';
+const APP_VERSION = '16';
 (async ()=>{
   try{
     if(!location.protocol.startsWith('http')) return;
@@ -1487,11 +1488,14 @@ function showFeat(id, animate){
   if(!r){ box.hidden = true; return; }
   featId = id;
   box.hidden = false;
+  box.classList.add('instant','veiled');
+  void box.offsetWidth;
   $('#featName').textContent = r.name;
   $('#featIngs').textContent = r.ing.filter(i=>!i.opt && i.id!=='ice').slice(0,3).map(i=>ING[i.id].name.split(' / ')[0]).join(' · ');
   $('#featGl').innerHTML = glassSVG(r.glass, r.color).replace(/rgba\(46,31,26,\.7\)/g,'#fff');
-  box.classList.add('veiled');
   $('#featCta').textContent = 'לחצו לגלות';
+  void box.offsetWidth;
+  box.classList.remove('instant');
   box.setAttribute('aria-label', 'קוקטייל בהפתעה. לחצו כדי לגלות');
   if(animate){ box.classList.remove('swap'); void box.offsetWidth; box.classList.add('swap'); }
 }
