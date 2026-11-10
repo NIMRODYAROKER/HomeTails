@@ -450,6 +450,35 @@ footer{max-width:1140px;margin:0 auto;padding:0 18px 120px}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
+
+/* ===== v26: top panel + compact surprise ===== */
+.field{min-height:56px;padding:8px 8px 8px 14px;border:1.5px solid transparent;border-radius:28px;background:rgba(255,255,255,.95);box-shadow:inset 0 0 0 1px rgba(240,101,122,.14),0 6px 18px -10px rgba(200,70,100,.35)}
+.field:focus-within{border-color:var(--accent);box-shadow:0 0 0 5px rgba(240,101,122,.16),0 6px 18px -10px rgba(200,70,100,.35)}
+.s-ic{width:40px;height:40px;flex:none;border-radius:50%;background:var(--grad);display:grid;place-items:center;box-shadow:0 4px 10px -4px rgba(240,101,122,.8)}
+.field .s-ic svg.s{width:18px;height:18px;stroke:#fff}
+.field input{font-size:15.5px}
+.browse{margin-top:12px;height:64px;border-radius:22px;padding:0 10px 0 14px;justify-content:flex-start;gap:12px;text-align:right;
+  background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(255,236,238,.95));border:1px solid rgba(240,101,122,.16);box-shadow:0 6px 18px -10px rgba(200,70,100,.35);color:var(--text)}
+.browse:hover{border-color:rgba(240,101,122,.45)}
+.bw-ic{width:40px;height:40px;flex:none;border-radius:14px;background:#FFE1E5;color:var(--accent);display:grid;place-items:center}
+.browse .bw-ic svg{width:20px;height:20px;stroke:currentColor}
+.bw-tx{display:flex;flex-direction:column;line-height:1.2;flex:1;min-width:0}
+.bw-tx span{font-weight:700;font-size:15.5px}
+.bw-tx small{font-size:12.5px;color:var(--muted);font-weight:400}
+.browse b{margin:0;font-size:12.5px;font-weight:700;color:#fff;background:var(--grad);padding:4px 10px;border-radius:999px}
+.browse b:empty{display:none}
+.browse b:not(:empty)::before{content:none}
+.browse svg.bw-ch{width:18px;height:18px;stroke:var(--accent);flex:none;margin-inline-start:2px}
+.feat{min-height:0;padding:12px 18px;border-radius:22px}
+.feat::before{width:160px;height:160px;left:-40px;top:-60px}
+.feat-txt{padding-left:118px}
+.feat small{font-size:12px}
+.feat h3{font-size:22px;margin:2px 0 2px}
+.feat p{font-size:12.5px}
+.feat-cta{margin-top:7px;font-size:13px;padding:5px 14px}
+.feat-gl{left:58px;top:0;bottom:0;margin:auto 0;width:54px;height:76px}
+.feat-gl svg{width:54px;height:76px}
+.shuffle{top:0;bottom:0;margin:auto 0;left:12px;width:36px;height:36px}
 </style>
 
 </head>
@@ -475,16 +504,18 @@ footer{max-width:1140px;margin:0 auto;padding:0 18px 120px}
 
     <div class="field-wrap">
       <div class="field" id="field">
-        <svg class="s" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <span class="s-ic"><svg class="s" viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></span>
         <span id="tokens" style="display:contents"></span>
-        <input id="q" type="text" autocomplete="off" placeholder="הקלידו מרכיב..." role="combobox" aria-expanded="false" aria-controls="dd" aria-autocomplete="list" aria-label="הוספת מרכיב">
+        <input id="q" type="text" autocomplete="off" placeholder="חפשו מרכיב, למשל ליים" role="combobox" aria-expanded="false" aria-controls="dd" aria-autocomplete="list" aria-label="הוספת מרכיב">
       </div>
       <ul class="dd" id="dd" role="listbox" hidden></ul>
     </div>
 
-    <button class="browse press b-ghost" id="browse">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
-      <span>כל המרכיבים</span> <b id="browseN"></b>
+    <button class="browse press" id="browse">
+      <span class="bw-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="2"/></svg></span>
+      <span class="bw-tx"><span>כל המרכיבים</span><small>בחירה לפי קטגוריות</small></span>
+      <b id="browseN"></b>
+      <svg class="bw-ch" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
     </button>
   </section>
 
@@ -882,7 +913,7 @@ function renderTokens(){
   $('#tokens').innerHTML =
     (hidden>0 ? `<button class="tok more" dir="ltr" id="moreTok" aria-label="עוד ${hidden} מרכיבים">+${hidden}</button>` : '') +
     shownT.map(t=>`<span class="tok${t.k==='c'?' custom':''}">${esc(t.name)}<button class="x xb" ${t.k==='i'?`data-rm="${t.id}"`:`data-rmc="${esc(t.id)}"`} aria-label="הסרת ${esc(t.name)}">${X_SM}</button></span>`).join('');
-  $('#q').placeholder = all.length ? 'עוד משהו?' : 'הקלידו מרכיב...';
+  $('#q').placeholder = all.length ? 'עוד משהו?' : 'חפשו מרכיב, למשל ליים';
   $('#browseN').textContent = all.length ? `${all.length} נבחרו` : '';
   $('#clear').hidden = !all.length;
 }
@@ -1355,7 +1386,7 @@ if('IntersectionObserver' in window){
 })();
 
 /* auto-update: if a newer version was published, load it (bypasses the browser's saved copy) */
-const APP_VERSION = '25';
+const APP_VERSION = '26';
 (async ()=>{
   try{
     if(!location.protocol.startsWith('http')) return;
