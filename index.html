@@ -406,6 +406,11 @@ footer{max-width:1140px;margin:0 auto;padding:0 18px 120px}
 .shuffle svg{width:18px;height:18px;stroke:#fff}
 .shuffle.spin{animation:roll .5s var(--spring)}
 .feat.swap .feat-txt,.feat.swap .feat-gl{animation:featIn .45s var(--spring)}
+#featName,#featIngs,.feat-gl{transition:filter .6s ease,opacity .6s ease}
+.feat.veiled #featName,.feat.veiled #featIngs{filter:blur(9px);opacity:.85;user-select:none}
+.feat.veiled .feat-gl{filter:blur(7px);opacity:.8}
+.feat.veiled .feat-cta{animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
 @keyframes featIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
 @media (prefers-reduced-motion:reduce){
@@ -458,7 +463,7 @@ footer{max-width:1140px;margin:0 auto;padding:0 18px 120px}
         <small>קוקטייל בהפתעה</small>
         <h3 id="featName"></h3>
         <p id="featIngs"></p>
-        <span class="feat-cta">למתכון</span>
+        <span class="feat-cta" id="featCta">לחצו לגלות</span>
       </div>
       <div class="feat-gl" id="featGl"></div>
       <button class="shuffle" id="shuffle" aria-label="קוקטייל אחר בהפתעה" title="קוקטייל אחר"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg></button>
@@ -1457,7 +1462,7 @@ if('IntersectionObserver' in window){
 })();
 
 /* auto-update: if a newer version was published, load it (bypasses the browser's saved copy) */
-const APP_VERSION = '14';
+const APP_VERSION = '15';
 (async ()=>{
   try{
     if(!location.protocol.startsWith('http')) return;
@@ -1485,7 +1490,9 @@ function showFeat(id, animate){
   $('#featName').textContent = r.name;
   $('#featIngs').textContent = r.ing.filter(i=>!i.opt && i.id!=='ice').slice(0,3).map(i=>ING[i.id].name.split(' / ')[0]).join(' · ');
   $('#featGl').innerHTML = glassSVG(r.glass, r.color).replace(/rgba\(46,31,26,\.7\)/g,'#fff');
-  box.setAttribute('aria-label', 'קוקטייל בהפתעה: ' + r.name);
+  box.classList.add('veiled');
+  $('#featCta').textContent = 'לחצו לגלות';
+  box.setAttribute('aria-label', 'קוקטייל בהפתעה. לחצו כדי לגלות');
   if(animate){ box.classList.remove('swap'); void box.offsetWidth; box.classList.add('swap'); }
 }
 function refreshFeat(){
@@ -1500,8 +1507,18 @@ $('#shuffle').addEventListener('click', e=>{
   btn.classList.remove('spin'); void btn.offsetWidth; btn.classList.add('spin');
   if(pool.length) showFeat(pool[Math.floor(Math.random()*pool.length)].r.id, true);
 });
-$('#feat').addEventListener('click', ()=>{ if(featId) openRecipe(featId); });
-$('#feat').addEventListener('keydown', e=>{ if((e.key==='Enter'||e.key===' ') && e.target.id==='feat'){ e.preventDefault(); openRecipe(featId); } });
+function revealOrOpen(){
+  const box = $('#feat');
+  if(!featId) return;
+  if(box.classList.contains('veiled')){
+    box.classList.remove('veiled');
+    $('#featCta').textContent = 'למתכון';
+    box.setAttribute('aria-label', 'קוקטייל בהפתעה: ' + RECIPES.find(x=>x.id===featId).name);
+    const r = box.getBoundingClientRect(); sparks(r.left + r.width*0.65, r.top + r.height*0.4);
+  } else openRecipe(featId);
+}
+$('#feat').addEventListener('click', revealOrOpen);
+$('#feat').addEventListener('keydown', e=>{ if((e.key==='Enter'||e.key===' ') && e.target.id==='feat'){ e.preventDefault(); revealOrOpen(); } });
 refreshFeat();
 
 renderTokens();
