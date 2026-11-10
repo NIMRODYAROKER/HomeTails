@@ -112,17 +112,13 @@ input{font:inherit;color:inherit}
   .panel-ings{position:sticky;top:20px}
 }
 .panel{background:var(--panel);border:1px solid rgba(255,255,255,.9);border-radius:var(--r);padding:18px;box-shadow:0 1px 2px rgba(80,40,30,.04),0 20px 40px -24px rgba(200,80,100,.3);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.ph{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.ph{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;min-height:40px}
 .ph h2{font-size:20px;font-weight:700;letter-spacing:-.4px}
 .icons{display:flex;gap:8px}
 .tools{display:flex;align-items:center;gap:4px}
 .clear-all{min-height:40px;padding:0 6px;font-size:14px;font-weight:600;color:var(--accent);animation:fadeIn .25s ease;transition:opacity .2s}
 .clear-all:hover{text-decoration:underline;text-underline-offset:4px}
 .clear-all[hidden]{display:none}
-.spark-btn{width:40px;height:40px;display:grid;place-items:center;color:var(--accent);transition:transform .35s var(--spring)}
-.spark-btn svg{width:22px;height:22px}
-.spark-btn:hover{transform:rotate(-15deg) scale(1.15)}
-.spark-btn:active{transform:scale(.85)}
 .tool{height:36px;width:38px;padding:0;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:5px;color:var(--accent);font-size:13.5px;font-weight:600;transition:background .2s,color .2s,transform .2s var(--spring)}
 .tool svg{width:17px;height:17px;transition:transform .35s var(--spring)}
 .tool:hover{background:var(--accent);color:#fff}
@@ -377,9 +373,6 @@ footer{max-width:1140px;margin:0 auto;padding:0 18px 120px}
       <h2 id="t1">מה יש בבית?</h2>
       <div class="tools">
         <button class="clear-all" id="clear" hidden>מחק הכל</button>
-        <button class="spark-btn" id="basics" aria-label="הוספת ערכת בסיס: קרח, סוכר, לימון, סודה ועוד" title="ערכת בסיס">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg>
-        </button>
       </div>
     </div>
 
@@ -1272,12 +1265,6 @@ $('#pkBody').addEventListener('click', e=>{
   if(unlocked.length){ const r = row.getBoundingClientRect(); sparks(r.left + 20, r.top + r.height/2); }
 });
 
-$('#basics').addEventListener('click', e=>{
-  ['ice','sugar','lemon','soda','water','salt','pepper'].forEach(id=>selected.add(id));
-  const unlocked = afterChange();
-  if(unlocked.length) celebrate(unlocked, e.currentTarget);
-  else toast('נוספה ערכת בסיס');
-});
 
 $('#clear').addEventListener('click', ()=>{
   selected.clear(); custom = [];
@@ -1400,7 +1387,7 @@ if('IntersectionObserver' in window){
 })();
 
 /* auto-update: if a newer version was published, load it (bypasses the browser's saved copy) */
-const APP_VERSION = '4';
+const APP_VERSION = '5';
 (async ()=>{
   try{
     if(!location.protocol.startsWith('http')) return;
