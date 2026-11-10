@@ -521,7 +521,8 @@ const CATS = [
   {id:'soft',  name:'מיצים ומשקאות קלים',    color:'#FF9F1C'},
   {id:'sweet', name:'סירופים ומתוקים',       color:'#7B5CFF'},
   {id:'fruit', name:'פירות וצמחים',          color:'#2EC4B6'},
-  {id:'extra', name:'קרח ותוספות',           color:'#3A86FF'}
+  {id:'extra', name:'קרח ותוספות',           color:'#3A86FF'},
+  {id:'monin', name:'סירופי מונין',          color:'#F0657A'}
 ];
 
 // [id, name, category, aliases]
@@ -579,7 +580,18 @@ const INGS = [
   ['tabasco','טבסקו','extra',['רוטב חריף','צ\'ילי']],
   ['worcestershire','רוטב ווסטרשייר','extra',['ווסטרשייר','וורצסטר']],
   ['olive','זיתים ירוקים','extra',['זית','זיתים']],
-  ['egg_white','ביצה (חלבון)','extra',['ביצה','חלבון','ביצים']]
+  ['egg_white','ביצה (חלבון)','extra',['ביצה','חלבון','ביצים']],
+  ['monin_passion','מונין פסיפלורה','monin',['מונין','monin','פסיפלורה','פאשן פרוט','passion']],
+  ['monin_strawberry','מונין תות','monin',['מונין','monin','סירופ תות']],
+  ['monin_vanilla','מונין וניל','monin',['מונין','monin','וניל','סירופ וניל']],
+  ['monin_caramel','מונין קרמל','monin',['מונין','monin','קרמל','סירופ קרמל']],
+  ['monin_hazelnut','מונין אגוזי לוז','monin',['מונין','monin','אגוזי לוז','לוז','הייזלנאט']],
+  ['monin_coconut','מונין קוקוס','monin',['מונין','monin','סירופ קוקוס']],
+  ['monin_blue','מונין בלו קוראסאו','monin',['מונין','monin','בלו קוראסאו','קוראסאו','כחול']],
+  ['monin_mojito','מונין מוחיטו מנטה','monin',['מונין','monin','מוחיטו','מנטה']],
+  ['monin_watermelon','מונין אבטיח','monin',['מונין','monin','אבטיח']],
+  ['monin_grenadine','מונין גרנדין','monin',['מונין','monin','גרנדין']],
+  ['monin_cane','מונין סוכר קנים','monin',['מונין','monin','סוכר קנים','pure cane','סירופ סוכר']]
 ].map(([id,name,cat,aliases])=>({id,name,cat,aliases}));
 const ING = Object.fromEntries(INGS.map(i=>[i.id,i]));
 
@@ -877,7 +889,138 @@ const RECIPES = [
   alcNote:'אפס אלכוהול, אבל יש קפאין.',
   ing:[{id:'espresso',a:'30 מ״ל'},{id:'tonic',a:'120 מ״ל'},{id:'ice',a:'כוס מלאה'},{id:'orange',a:'רצועה',t:'קליפת תפוז',opt:true}],
   steps:['ממלאים כוס בקרח ומוזגים טוניק.','שופכים את האספרסו לאט מעל, על גב כף, כדי ליצור שכבות.','מקשטים בקליפת תפוז. מערבבים רק לפני ששותים.'],
-  subs:[{id:'tonic',alt:['soda'],tip:'סודה במקום טוניק: פחות מריר.'}]}
+  subs:[{id:'tonic',alt:['soda'],tip:'סודה במקום טוניק: פחות מריר.'}]},
+
+/* ---------- מונין ---------- */
+{ id:'pornstar', name:'פורנסטאר מרטיני', en:'Pornstar Martini', alc:3, color:'#F7B733', glass:'coupe', shake:true,
+  serve:'כוס קופה מקוררת, ושוט קטן של פרוסקו בצד', garnish:'חצי פסיפלורה, או פרוסת ליים', diff:2, time:5,
+  taste:['פירותי','מתוק','חמצמץ'], tasteNote:'טרופי, וניליי וחמצמץ. אחד הקוקטיילים הכי מוזמנים בברים.',
+  alcNote:'חזק-בינוני: 45 מ״ל וודקה, ועוד שוט פרוסקו קטן בצד אם רוצים.',
+  ing:[{id:'vodka',a:'45 מ״ל'},{id:'monin_passion',a:'25 מ״ל'},{id:'monin_vanilla',a:'10 מ״ל'},{id:'lime',a:'15 מ״ל',t:'מיץ ליים'},{id:'ice',a:'חופן'},{id:'prosecco',a:'60 מ״ל',t:'פרוסקו (שוט בצד)',opt:true}],
+  steps:['בשייקר שמים וודקה, מונין פסיפלורה, מונין וניל ומיץ ליים.','מוסיפים הרבה קרח ומנערים חזק 15 שניות.','מסננים לכוס קופה מקוררת.','מגישים עם שוט קטן של פרוסקו בצד: לוגמים לסירוגין.'],
+  subs:[{id:'monin_vanilla',alt:['sugar_syrup','monin_cane'],tip:'סירופ סוכר במקום וניל: פחות עשיר, עדיין טעים.'},{id:'lime',alt:['lemon'],tip:'לימון במקום ליים.'}]},
+
+{ id:'passionmojito', name:'מוחיטו פסיפלורה', en:'Passion Fruit Mojito', alc:2, color:'#F4C430', glass:'highball',
+  serve:'כוס גבוהה מלאה קרח, עם קשית', garnish:'ענף נענע ופלח ליים', diff:1, time:4,
+  taste:['פירותי','רענן','חמצמץ'], tasteNote:'מוחיטו קלאסי עם פסיפלורה טרופית. קיץ על מלא.',
+  alcNote:'בינוני: 50 מ״ל רום בכוס ארוכה.',
+  ing:[{id:'white_rum',a:'50 מ״ל'},{id:'monin_passion',a:'20 מ״ל'},{id:'lime',a:'חצי',t:'ליים, חתוך לפלחים'},{id:'mint',a:'8 עלים',t:'נענע'},{id:'soda',a:'60 מ״ל'},{id:'ice',a:'כוס מלאה'}],
+  steps:['מועכים בעדינות בכוס את הליים, הנענע ומונין הפסיפלורה.','ממלאים קרח ומוזגים רום.','משלימים בסודה ומערבבים מלמטה למעלה.'],
+  subs:[{id:'white_rum',alt:['vodka'],tip:'וודקה במקום רום.'},{id:'lime',alt:['lemon'],tip:'לימון במקום ליים.'}]},
+
+{ id:'strawdaiquiri', name:'דאקירי תות', en:'Strawberry Daiquiri', alc:3, color:'#E8455A', glass:'coupe', shake:true,
+  serve:'כוס קופה מקוררת. אפשר גם קפוא בבלנדר בכוס גבוהה', garnish:'תות חתוך על שפת הכוס', diff:2, time:4,
+  taste:['פירותי','מתוק','חמצמץ'], tasteNote:'דאקירי קלאסי בגרסה ורודה ומתוקה של תות.',
+  alcNote:'חזק: 50 מ״ל רום כמעט בלי דילול.',
+  ing:[{id:'white_rum',a:'50 מ״ל'},{id:'monin_strawberry',a:'20 מ״ל'},{id:'lime',a:'25 מ״ל',t:'מיץ ליים'},{id:'ice',a:'חופן'},{id:'strawberry',a:'2',t:'תותים (לגרסה קפואה)',opt:true}],
+  steps:['בשייקר שמים רום, מונין תות ומיץ ליים.','מוסיפים קרח ומנערים חזק 15 שניות.','מסננים לכוס מקוררת.','בא לכם קפוא? הכל בבלנדר עם כוס קרח ושני תותים.'],
+  subs:[{id:'lime',alt:['lemon'],tip:'לימון במקום ליים.'},{id:'monin_strawberry',alt:['grenadine'],tip:'גרנדין במקום תות: צבע דומה, טעם רימונים.'}]},
+
+{ id:'vanillaespresso', name:'אספרסו מרטיני וניל', en:'Vanilla Espresso Martini', alc:3, color:'#3B2416', glass:'martini', shake:true,
+  serve:'כוס מרטיני מקוררת', garnish:'3 פולי קפה', diff:2, time:5,
+  taste:['מריר','מתוק','קרמי'], tasteNote:'אספרסו מרטיני עם וניל רך. כמו קינוח של בית קפה.',
+  alcNote:'חזק: 65 מ״ל אלכוהול, וגם קפאין.',
+  ing:[{id:'vodka',a:'45 מ״ל'},{id:'coffee_liqueur',a:'20 מ״ל'},{id:'espresso',a:'30 מ״ל'},{id:'monin_vanilla',a:'15 מ״ל'},{id:'ice',a:'חופן גדול'}],
+  steps:['מכינים אספרסו ונותנים לו להתקרר דקה.','בשייקר שמים הכל עם הרבה קרח.','מנערים ממש חזק 20 שניות, בשביל הקצף.','מסננים לכוס ומקשטים בפולי קפה.'],
+  subs:[{id:'coffee_liqueur',alt:['monin_caramel'],tip:'מונין קרמל במקום ליקר קפה: מתוק יותר, פחות אלכוהול.'}]},
+
+{ id:'caramelof', name:'אולד פשנד קרמל', en:'Caramel Old Fashioned', alc:3, color:'#B5651D', glass:'rocks',
+  serve:'כוס נמוכה עם קוביית קרח גדולה', garnish:'רצועת קליפת תפוז', diff:1, time:3,
+  taste:['מתוק','מריר','יבש'], tasteNote:'אולד פשנד עם קרמל במקום סוכר. חם, עגול ועשיר.',
+  alcNote:'חזק: 60 מ״ל ויסקי כמעט נקי. לשתות לאט.',
+  ing:[{id:'whiskey',a:'60 מ״ל'},{id:'monin_caramel',a:'10 מ״ל'},{id:'angostura',a:'2 טיפות'},{id:'ice',a:'קובייה גדולה'},{id:'orange',a:'רצועה',t:'קליפת תפוז',opt:true}],
+  steps:['בכוס שמים מונין קרמל וביטר.','מוסיפים קרח ומוזגים ויסקי.','מערבבים בכף כ-30 שניות.','סוחטים קליפת תפוז מעל ומכניסים לכוס.'],
+  subs:[{id:'whiskey',alt:['dark_rum'],tip:'רום כהה במקום ויסקי.'}]},
+
+{ id:'nuttyrussian', name:'נאטי רשן', en:'Nutty Russian', alc:2, color:'#C9A27E', glass:'rocks',
+  serve:'כוס נמוכה עם קרח', garnish:'אבקת קקאו או אגוז לוז קצוץ', diff:1, time:2,
+  taste:['קרמי','מתוק'], tasteNote:'וייט רשן עם אגוזי לוז. נוטלה בכוס.',
+  alcNote:'בינוני: 60 מ״ל אלכוהול, מרוכך בשמנת.',
+  ing:[{id:'vodka',a:'40 מ״ל'},{id:'coffee_liqueur',a:'20 מ״ל'},{id:'monin_hazelnut',a:'15 מ״ל'},{id:'cream',a:'30 מ״ל'},{id:'ice',a:'חופן'}],
+  steps:['ממלאים כוס נמוכה בקרח.','מוזגים וודקה, ליקר קפה ומונין אגוזי לוז ומערבבים.','שופכים את השמנת לאט מעל.'],
+  subs:[{id:'cream',alt:['milk'],tip:'חלב במקום שמנת: קליל יותר.'}]},
+
+{ id:'cococooler', name:'קוקונט קולר', en:'Coconut Cooler', alc:2, color:'#FFF1C9', glass:'hurricane',
+  serve:'כוס גבוהה עם הרבה קרח וקשית', garnish:'פלח אננס או ליים', diff:1, time:2,
+  taste:['פירותי','מתוק','רענן'], tasteNote:'פינה קולדה קלילה בלי בלנדר. אננס, קוקוס וקרח.',
+  alcNote:'בינוני: 45 מ״ל רום בכוס ארוכה.',
+  ing:[{id:'white_rum',a:'45 מ״ל'},{id:'monin_coconut',a:'20 מ״ל'},{id:'pineapple_juice',a:'120 מ״ל'},{id:'lime',a:'10 מ״ל',t:'מיץ ליים'},{id:'ice',a:'כוס מלאה'}],
+  steps:['ממלאים כוס בקרח.','מוזגים רום, מונין קוקוס, מיץ אננס ומיץ ליים.','מערבבים טוב ומקשטים.'],
+  subs:[{id:'white_rum',alt:['dark_rum','vodka'],tip:'רום כהה או וודקה.'},{id:'lime',alt:['lemon'],tip:'לימון במקום ליים.'}]},
+
+{ id:'bluelagoon', name:'בלו לגון', en:'Blue Lagoon', alc:2, color:'#2E9CDB', glass:'highball',
+  serve:'כוס גבוהה עם קרח', garnish:'פרוסת לימון ודובדבן', diff:1, time:2,
+  taste:['מתוק','חמצמץ','מבעבע'], tasteNote:'כחול כמו לגונה, לימוני ומבעבע. הכי צבעוני בבר.',
+  alcNote:'בינוני: 40 מ״ל וודקה בכוס ארוכה.',
+  ing:[{id:'vodka',a:'40 מ״ל'},{id:'monin_blue',a:'20 מ״ל'},{id:'lemon',a:'20 מ״ל',t:'מיץ לימון'},{id:'sprite',a:'100 מ״ל'},{id:'ice',a:'כוס מלאה'}],
+  steps:['ממלאים כוס גבוהה בקרח.','מוזגים וודקה, מונין בלו קוראסאו ומיץ לימון.','משלימים בספרייט ומערבבים פעם אחת.'],
+  subs:[{id:'sprite',alt:['soda'],tip:'סודה במקום ספרייט: פחות מתוק.'},{id:'lemon',alt:['lime'],tip:'ליים במקום לימון.'}]},
+
+{ id:'moninmojito', name:'מוחיטו מונין מהיר', en:'Quick Monin Mojito', alc:2, color:'#7ED957', glass:'highball',
+  serve:'כוס גבוהה עם קרח וקשית', garnish:'ענף נענע אם יש', diff:1, time:2,
+  taste:['רענן','חמצמץ','מתוק'], tasteNote:'כל הטעם של מוחיטו בלי למעוך נענע. מושלם כשיש תור בבר.',
+  alcNote:'בינוני: 50 מ״ל רום בכוס ארוכה.',
+  ing:[{id:'white_rum',a:'50 מ״ל'},{id:'monin_mojito',a:'20 מ״ל'},{id:'lime',a:'חצי',t:'ליים, חתוך לפלחים'},{id:'soda',a:'100 מ״ל'},{id:'ice',a:'כוס מלאה'},{id:'mint',a:'ענף',t:'נענע לקישוט',opt:true}],
+  steps:['סוחטים את פלחי הליים לכוס וזורקים אותם פנימה.','מוסיפים מונין מוחיטו מנטה, ממלאים קרח ומוזגים רום.','משלימים בסודה ומערבבים.'],
+  subs:[{id:'white_rum',alt:['vodka'],tip:'וודקה במקום רום.'},{id:'lime',alt:['lemon'],tip:'לימון במקום ליים.'}]},
+
+{ id:'watermelonfizz', name:'וודקה אבטיח', en:'Watermelon Vodka Fizz', alc:2, color:'#FF6F7D', glass:'highball',
+  serve:'כוס גבוהה עם קרח', garnish:'משולש אבטיח או ענף נענע', diff:1, time:2,
+  taste:['פירותי','רענן','מבעבע'], tasteNote:'טעם של אבטיח קר באוגוסט, עם בועות.',
+  alcNote:'בינוני: 45 מ״ל וודקה בכוס ארוכה.',
+  ing:[{id:'vodka',a:'45 מ״ל'},{id:'monin_watermelon',a:'20 מ״ל'},{id:'lime',a:'15 מ״ל',t:'מיץ ליים'},{id:'soda',a:'100 מ״ל'},{id:'ice',a:'כוס מלאה'},{id:'mint',a:'ענף',opt:true}],
+  steps:['ממלאים כוס בקרח.','מוזגים וודקה, מונין אבטיח ומיץ ליים.','משלימים בסודה ומערבבים.'],
+  subs:[{id:'soda',alt:['sprite'],tip:'ספרייט במקום סודה: מתוק יותר.'},{id:'lime',alt:['lemon'],tip:'לימון במקום ליים.'}]},
+
+/* מונין בלי אלכוהול */
+{ id:'passionnojito', name:'נוחיטו פסיפלורה', en:'Virgin Passion Mojito', alc:0, color:'#F7C948', glass:'highball',
+  serve:'כוס גבוהה מלאה קרח, עם קשית', garnish:'ענף נענע', diff:1, time:3,
+  taste:['פירותי','רענן','חמצמץ'], tasteNote:'נוחיטו טרופי. בלי אלכוהול, עם המון טעם.',
+  alcNote:'אפס אלכוהול.',
+  ing:[{id:'monin_passion',a:'20 מ״ל'},{id:'lime',a:'חצי',t:'ליים, חתוך לפלחים'},{id:'mint',a:'8 עלים',t:'נענע'},{id:'soda',a:'150 מ״ל'},{id:'ice',a:'כוס מלאה'}],
+  steps:['מועכים בעדינות בכוס ליים, נענע ומונין פסיפלורה.','ממלאים קרח.','משלימים בסודה ומערבבים.'],
+  subs:[{id:'soda',alt:['sprite'],tip:'ספרייט במקום סודה: מתוק יותר.'},{id:'lime',alt:['lemon'],tip:'לימון במקום ליים.'}]},
+
+{ id:'strawlemonade', name:'לימונדה תות', en:'Strawberry Lemonade', alc:0, color:'#FF7A8A', glass:'highball',
+  serve:'כוס גבוהה עם קרח', garnish:'תות חתוך ופרוסת לימון', diff:1, time:2,
+  taste:['פירותי','חמצמץ','מתוק'], tasteNote:'לימונדה ורודה ומרעננת. הילדים יאהבו, וגם המבוגרים.',
+  alcNote:'אפס אלכוהול.',
+  ing:[{id:'monin_strawberry',a:'25 מ״ל'},{id:'lemon',a:'25 מ״ל',t:'מיץ לימון'},{id:'water',a:'150 מ״ל',t:'מים קרים'},{id:'ice',a:'כוס מלאה'}],
+  steps:['בכוס מערבבים מונין תות ומיץ לימון.','ממלאים קרח ומשלימים במים קרים.','מערבבים ומקשטים.'],
+  subs:[{id:'water',alt:['soda'],tip:'סודה במקום מים: לימונדה מבעבעת.'},{id:'lemon',alt:['lime'],tip:'ליים במקום לימון.'}]},
+
+{ id:'watermeloncooler', name:'אבטיח קולר', en:'Watermelon Cooler', alc:0, color:'#FF8A8A', glass:'highball',
+  serve:'כוס גבוהה עם קרח', garnish:'ענף נענע', diff:1, time:2,
+  taste:['פירותי','רענן','מבעבע'], tasteNote:'קליל, ורוד ומבעבע. משקה של בריכה.',
+  alcNote:'אפס אלכוהול.',
+  ing:[{id:'monin_watermelon',a:'25 מ״ל'},{id:'lime',a:'15 מ״ל',t:'מיץ ליים'},{id:'soda',a:'150 מ״ל'},{id:'ice',a:'כוס מלאה'},{id:'mint',a:'ענף',opt:true}],
+  steps:['ממלאים כוס בקרח.','מוזגים מונין אבטיח ומיץ ליים.','משלימים בסודה ומערבבים.'],
+  subs:[{id:'lime',alt:['lemon'],tip:'לימון במקום ליים.'},{id:'soda',alt:['sprite','water'],tip:'ספרייט או מים במקום סודה.'}]},
+
+{ id:'bluelemonade', name:'בלו לימונדה', en:'Blue Lemonade', alc:0, color:'#3AA8E0', glass:'highball',
+  serve:'כוס גבוהה עם קרח', garnish:'פרוסת לימון', diff:1, time:2,
+  taste:['מתוק','חמצמץ','מבעבע'], tasteNote:'לימונדה כחולה ומבעבעת. נראית כמו קסם.',
+  alcNote:'אפס אלכוהול.',
+  ing:[{id:'monin_blue',a:'20 מ״ל'},{id:'lemon',a:'25 מ״ל',t:'מיץ לימון'},{id:'sprite',a:'150 מ״ל'},{id:'ice',a:'כוס מלאה'}],
+  steps:['ממלאים כוס בקרח.','מוזגים מונין בלו קוראסאו ומיץ לימון.','משלימים בספרייט ומערבבים.'],
+  subs:[{id:'sprite',alt:['soda'],tip:'סודה במקום ספרייט.'},{id:'lemon',alt:['lime'],tip:'ליים במקום לימון.'}]},
+
+{ id:'vanillatonic', name:'וניל אספרסו טוניק', en:'Vanilla Espresso Tonic', alc:0, color:'#7A5230', glass:'highball',
+  serve:'כוס גבוהה ושקופה', garnish:'רצועת קליפת תפוז', diff:1, time:2,
+  taste:['מריר','מתוק','מבעבע'], tasteNote:'אספרסו טוניק עם נגיעה של וניל שמרככת את המרירות.',
+  alcNote:'אפס אלכוהול, אבל יש קפאין.',
+  ing:[{id:'monin_vanilla',a:'10 מ״ל'},{id:'tonic',a:'120 מ״ל'},{id:'espresso',a:'30 מ״ל'},{id:'ice',a:'כוס מלאה'}],
+  steps:['ממלאים כוס בקרח, מוזגים מונין וניל וטוניק ומערבבים.','שופכים את האספרסו לאט מעל, על גב כף.','מערבבים רק לפני ששותים.'],
+  subs:[{id:'tonic',alt:['soda'],tip:'סודה במקום טוניק: פחות מריר.'}]},
+
+{ id:'caramellatte', name:'אייס לאטה קרמל', en:'Iced Caramel Latte', alc:0, color:'#C8925A', glass:'highball',
+  serve:'כוס גבוהה עם קרח וקשית', garnish:'קצת מונין קרמל על הדופן', diff:1, time:3,
+  taste:['קרמי','מתוק'], tasteNote:'הקפה הקר של בתי הקפה, בבית.',
+  alcNote:'אפס אלכוהול, אבל יש קפאין.',
+  ing:[{id:'monin_caramel',a:'15 מ״ל'},{id:'espresso',a:'30 מ״ל'},{id:'milk',a:'150 מ״ל',t:'חלב קר'},{id:'ice',a:'כוס מלאה'}],
+  steps:['בכוס מערבבים את מונין הקרמל עם האספרסו החם.','ממלאים קרח ומוזגים חלב קר.','מערבבים ושותים.'],
+  subs:[{id:'monin_caramel',alt:['monin_vanilla','monin_hazelnut'],tip:'וניל או אגוזי לוז במקום קרמל.'}]}
+
 ];
 
 /* ================== GLASSES (modern SVG) ================== */
@@ -968,6 +1111,12 @@ function sparks(x,y){
 }
 
 /* ================== MATCHING ================== */
+const GLOBAL_SUBS = {
+  sugar_syrup:{alt:['monin_cane'], tip:'מונין סוכר קנים עושה בדיוק את העבודה של סירופ סוכר.'},
+  sugar:{alt:['monin_cane'], tip:'מונין סוכר קנים במקום סוכר: 10 מ״ל במקום כל כפית.'},
+  grenadine:{alt:['monin_grenadine'], tip:'מונין גרנדין, אותו דבר בדיוק.'},
+  triple_sec:{alt:['monin_blue'], tip:'מונין בלו קוראסאו במקום טריפל סק: יוצא כחול, מתוק יותר ובלי אלכוהול.'}
+};
 function analyze(r){
   const req = r.ing.filter(i=>!i.opt);
   const missing = [], swaps = [];
@@ -975,8 +1124,13 @@ function analyze(r){
   for(const i of req){
     if(selected.has(i.id)){ have++; if(i.id!=='ice') haveReal++; continue; }
     const s = (r.subs||[]).find(s=>s.id===i.id);
-    const alt = s && s.alt.find(a=>selected.has(a));
-    if(alt){ have++; haveReal++; swaps.push({id:i.id, alt, tip:s.tip}); }
+    let alt = s && s.alt.find(a=>selected.has(a));
+    let tip = s && s.tip;
+    if(!alt && GLOBAL_SUBS[i.id]){
+      alt = GLOBAL_SUBS[i.id].alt.find(a=>selected.has(a));
+      tip = GLOBAL_SUBS[i.id].tip;
+    }
+    if(alt){ have++; haveReal++; swaps.push({id:i.id, alt, tip}); }
     else missing.push({id:i.id, sub:s});
   }
   return {missing, swaps, have, haveReal, total:req.length};
@@ -1007,7 +1161,8 @@ const CAT_ICONS = {
   soft:'<path d="M5 7h14l-1.5 14h-11z"/><path d="M14 7l2-5"/>',
   sweet:'<path d="M12 3c3 4 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 3-7 6-11z"/>',
   fruit:'<path d="M5 19C5 10 11 4 20 4c0 9-6 15-15 15z"/><path d="M5 19l8-8"/>',
-  extra:'<path d="M12 2l8 4.5v9L12 20l-8-4.5v-9z"/>'
+  extra:'<path d="M12 2l8 4.5v9L12 20l-8-4.5v-9z"/>',
+  monin:'<path d="M10 2h4v3l1.5 2v14a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1V7L10 5z"/><path d="M8.5 11h7v6h-7z"/>'
 };
 const MAX_TOKENS = 6;
 
@@ -1463,7 +1618,7 @@ if('IntersectionObserver' in window){
 })();
 
 /* auto-update: if a newer version was published, load it (bypasses the browser's saved copy) */
-const APP_VERSION = '16';
+const APP_VERSION = '17';
 (async ()=>{
   try{
     if(!location.protocol.startsWith('http')) return;
