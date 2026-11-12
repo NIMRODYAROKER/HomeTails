@@ -492,6 +492,9 @@ footer{max-width:1140px;margin:0 auto;padding:0 18px 120px}
 @keyframes frf{0%{transform:translate(0,0)}100%{transform:translate(25px,-40px)}}
 :root{--panel:rgba(255,255,255,.5)}
 .panel{border-color:rgba(255,255,255,.7);backdrop-filter:blur(5px) saturate(1.1);-webkit-backdrop-filter:blur(5px) saturate(1.1)}
+.share-btn{position:absolute;top:16px;right:68px;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:#fff;border:1.5px solid var(--line2);box-shadow:var(--press);color:var(--text);transition:transform .3s var(--spring)}
+.share-btn:active{transform:scale(.9)}
+.share-btn svg{width:20px;height:20px}
 </style>
 
 </head>
@@ -1147,6 +1150,7 @@ function openModal(m, focusEl){
   (focusEl || m.querySelector('button')).focus();
 }
 function closeModal(m){
+  if(m && m.id==='modal' && location.hash.startsWith('#c=')){ try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }
   m.hidden = true;
   if($('#modal').hidden && $('#picker').hidden) document.body.style.overflow = '';
   if(lastFocus) lastFocus.focus();
@@ -1176,6 +1180,7 @@ function openRecipe(id){
     <button class="close" data-close aria-label="סגירה">${X_SM}</button>
     <div class="s-hero">
       <div class="gl">${glassSVG(r.glass,r.color)}</div>
+      <button class="share-btn" data-share="${r.id}" aria-label="שיתוף המתכון"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7.5 7.5L12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button>
       <button class="heart big" data-fav="${r.id}" aria-pressed="${favs.has(r.id)}" aria-label="הוספה לאהובים"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.3A4.2 4.2 0 0 1 12 7.6a4.2 4.2 0 0 1 7.5 2.6c0 5.7-7.5 10.3-7.5 10.3z"/></svg></button>
       <h2 id="mTitle">${esc(r.name)}</h2>
       <p class="en" dir="ltr">${esc(r.en)}</p>
@@ -1205,6 +1210,7 @@ function openRecipe(id){
       </div>
     </div>`;
   openModal($('#modal'));
+  try{ history.replaceState(null,'',location.pathname+location.search+'#c='+r.id); }catch(e){}
 }
 
 /* ================== EVENTS ================== */
@@ -1398,8 +1404,31 @@ if('IntersectionObserver' in window){
   });
 })();
 
+/* share a recipe link; opening a link with #c=<id> opens that recipe */
+const SITE_URL = 'https://nimrodyaroker.github.io/HomeTails/';
+document.addEventListener('click', async e=>{
+  const b = e.target.closest('[data-share]');
+  if(!b) return;
+  const r = RECIPES.find(x=>x.id===b.dataset.share);
+  if(!r) return;
+  const url = SITE_URL + '#c=' + r.id;
+  const text = r.name + ' - המתכון ב-hometails';
+  if(navigator.share){
+    try{ await navigator.share({title:r.name, text, url}); }catch(err){}
+    return;
+  }
+  try{ await navigator.clipboard.writeText(text + '\n' + url); toast('הקישור הועתק'); }
+  catch(err){ prompt('העתיקו את הקישור:', url); }
+});
+function openFromHash(){
+  const m = location.hash.match(/^#c=([\w-]+)/);
+  if(m && RECIPES.some(x=>x.id===m[1])) openRecipe(m[1]);
+}
+setTimeout(openFromHash, 0);
+window.addEventListener('hashchange', openFromHash);
+
 /* auto-update: if a newer version was published, load it (bypasses the browser's saved copy) */
-const APP_VERSION = '31';
+const APP_VERSION = '32';
 (async ()=>{
   try{
     if(!location.protocol.startsWith('http')) return;
@@ -1407,7 +1436,7 @@ const APP_VERSION = '31';
     const m = (await res.text()).match(/const APP_VERSION = '(\d+)'/);
     if(m && m[1] !== APP_VERSION && sessionStorage.getItem('ht-upd') !== m[1]){
       sessionStorage.setItem('ht-upd', m[1]);
-      location.replace(location.pathname + '?v=' + m[1]);
+      location.replace(location.pathname + '?v=' + m[1] + location.hash);
     }
   }catch(e){}
 })();
